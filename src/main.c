@@ -9,7 +9,7 @@
  * avaliado pelos testes.
  */
 
-#include <stdio.h>
+#include <stddef.h>
 #include "lista.c"
 
 int main(int argc, char** argv) {
@@ -17,5 +17,5 @@ int main(int argc, char** argv) {
     Lista intlist;
 
     Lista_new(&intlist, sizeof(int), NULL);
-    
+
 }

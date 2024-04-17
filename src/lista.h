@@ -49,7 +49,7 @@ typedef struct Lista {
  *
  *    Listal_new(&strlist, sizeof(char*), free);
  */
-void Lista_new(Lista* lista, int data_size, void (*free_data)(void*));
+//void Lista_new(Lista* lista, int data_size, void (*free_data)(void*));
 
 /**
  * Libera memória utilizada pela lista, e a reinicializa.
