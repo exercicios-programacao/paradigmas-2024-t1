@@ -10,10 +10,12 @@
  */
 
 #include <stdio.h>
-
-#include "lista.h"
+#include "lista.c"
 
 int main(int argc, char** argv) {
-    printf("Hello World!\n");
-    return 0;
+
+    Lista intlist;
+
+    Lista_new(&intlist, sizeof(int), NULL);
+    
 }
