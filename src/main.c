@@ -24,6 +24,9 @@ int main(int argc, char** argv) {
     }
     
     Lista_next(&intlist);
+    Lista_next(&intlist);
+    
+    Lista_removeCurrent(&intlist);
 
     while (intlist.current != NULL) {
         printf("%d\n", *(int*)intlist.current->data);

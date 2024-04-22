@@ -110,11 +110,13 @@ void Lista_last(Lista* list) {
     list->current = list->tail;
 }
 
-void Lista_next(Lista* list) {
+int Lista_next(Lista* list) {
     if (list->current != NULL && list->current->next != NULL){
         list->current = list->current->next;
+        return 1;
     } else {
-        list->current = list->head;
+        list->current = NULL;
+        return 0;
     }
 }
 
@@ -150,5 +152,39 @@ void Lista_insertAfter(Lista* lista, void* dado) {
     }
 
     lista->size++;
+}
+
+void Lista_removeCurrent(Lista* lista){
+    if (lista->current == NULL) {
+        return;
+    }
+
+    NodeLista* node_pointer = lista->head;
+    NodeLista* previous_node = NULL;
+
+    while (node_pointer != lista->current) {
+        previous_node = node_pointer;
+        node_pointer = node_pointer->next;
+    }
+
+    if (previous_node == NULL) {
+        lista->head = node_pointer->next;
+    } else {
+        previous_node->next = node_pointer->next;
+    }
+
+    if (lista->tail == lista->current) {
+        lista->tail = previous_node;
+    }
+
+    if (lista->free_data != NULL) {
+        lista->free_data(node_pointer->data);
+    }
+
+    free(node_pointer->data);
+    free(node_pointer);
+
+    lista->current = lista->head;
+    lista->size--;
 }
 
