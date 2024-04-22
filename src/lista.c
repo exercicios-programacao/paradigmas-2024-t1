@@ -188,3 +188,25 @@ void Lista_removeCurrent(Lista* lista){
     lista->size--;
 }
 
+int Lista_previous(Lista* lista){
+    if (lista->current == NULL) {
+        return 0;
+    }
+
+    NodeLista* node_pointer = lista->head;
+    NodeLista* previous_node = NULL;
+
+    while (node_pointer != lista->current) {
+        previous_node = node_pointer;
+        node_pointer = node_pointer->next;
+    }
+
+    if (previous_node == NULL) {
+        return 0;
+    }
+
+    lista->current = previous_node;
+
+    return 1;
+}
+
