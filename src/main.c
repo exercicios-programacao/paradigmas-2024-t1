@@ -22,12 +22,12 @@ int main(int argc, char** argv) {
     for (int i = 0; i < 5; i++) {
         Lista_pushBack(&intlist, &nums[i]);
     }
-
-    NodeLista* currentNode = intlist.head;
     
-    while (currentNode != NULL) {
-        printf("%d\n", *(int*)currentNode->data);
-        currentNode = currentNode->next;
-        //to-do: está printando um valor negativo estranho no último node, verificar o que está acontecendo
+    Lista_next(&intlist);
+
+    while (intlist.current != NULL) {
+        printf("%d\n", *(int*)intlist.current->data);
+        
+        Lista_next(&intlist);
     }
 }

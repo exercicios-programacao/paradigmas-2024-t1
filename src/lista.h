@@ -5,17 +5,8 @@
  * Você deve definir a estrutura da lista utilizando as duas estruturas
  * abaixo. Você pode alterá-las com preferir.
  */
-typedef struct NodeLista {
-    void* data;
-    struct NodeLista* next;
-} NodeLista;
 
-typedef struct Lista {
-    int data_type_size;
-    NodeLista* head;
-    int size;
-    void (*free_data)(void*);
-} Lista;
+#include lista.c
 
 /**
  * Tarefas obrigatórias
