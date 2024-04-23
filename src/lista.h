@@ -5,14 +5,21 @@
  * Você deve definir a estrutura da lista utilizando as duas estruturas
  * abaixo. Você pode alterá-las com preferir.
  */
-typedef struct _lista_nodo {
-    void* valor;
-    struct _lista_nodo* next;
-} ListaNodo;
 
-typedef struct {
-} Lista;
+// Define a struct para o no
+typedef struct _lista_nodo{
+    void* valor;                 // * para o dado armazenado na celula
+    struct _lista_nodo * next;         // * para a prox celula
+    struct _lista_nodo * prev;         // * para a celula anterior
+}Lista_Nodo;
 
+typedef struct lista{
+    int data_size;
+	struct _lista_nodo* head;
+	struct _lista_nodo* tail;   
+    int size_list;
+    void (*free_data)(void*);
+}Lista;
 
 /**
  * Tarefas obrigatórias
