@@ -11,6 +11,8 @@ typedef struct _lista_nodo {
 } ListaNodo;
 
 typedef struct {
+    int size;
+    int data_size;
 } Lista;
 
 
@@ -18,7 +20,7 @@ typedef struct {
  * Tarefas obrigatórias
  *
  * Implementar uma lista com encadeamento simples que funciona como
- * um iterador sobre sim mesma.
+ * um iterador sobre si mesma.
  *
  * A implementação deveria seguir a ordem em que as funções estão
  * definidas neste arquivo, pois as mesmas funções são utilizadas
