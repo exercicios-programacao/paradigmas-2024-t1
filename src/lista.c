@@ -239,34 +239,31 @@ void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCu
     }
 }
 
-void Lista_insertAfter(Lista* lista, void* dado) { // Implementação da função insertAfter p inserir um novo elemento após o 'elemento atual
-    if (lista->tail != NULL) { // Verifica se o 'elemento atual' não é nulo
+void Lista_insertAfter(Lista* lista, void* dado) {
+    if (lista->tail != NULL) {
         Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
-        if (novo_nodo != NULL) { // Verifica se a aloc de mem foi top
+        if (novo_nodo != NULL) {
             novo_nodo->valor = malloc(lista->data_size);
-            if (novo_nodo->valor != NULL) { // Verifica se a aloc de mem foi top
+            if (novo_nodo->valor != NULL) {
+                memcpy(novo_nodo->valor, dado, lista->data_size);
                 novo_nodo->next = lista->tail->next;
-                if (novo_nodo->next != NULL) { // Se o prox nó apos o 'elemento atual' n for nulo, o nó anterior a ele agora é o novo nó
+                if (novo_nodo->next != NULL) {
                     novo_nodo->next->prev = novo_nodo;
                 }
                 else {
-                    lista->tail = novo_nodo; // Se o prox nó apos o 'elemento atual' for nulo,  o 'elemento atual' é o último nó da lista
-                    // Então, a tail da lista agora é o novo nó
+                    lista->tail = novo_nodo;
                 }
-                novo_nodo->prev = lista->tail; // O nó anterior ao novo nó é o 'elemento atual'
-                lista->tail->next = novo_nodo; // O prox nó apos o 'elemento atual' é o novo nó
-                lista->size_list++; // Incrementa o tamanho da lista
-                return;  // Retorna p interromper a função apos a insert bem-sucedida
+                novo_nodo->prev = lista->tail;
+                lista->tail->next = novo_nodo;
+                lista->size_list++;
+                return;
             }
-            free(novo_nodo); // Libera a memória alocada p o novo nó se a aloc de mem para o valor do novo nó falhar
+            free(novo_nodo);
         }
     }
-    // Se a inserção falhar
-    fprintf(stderr, "Erro: Falha ao inserir novo elemento na lista.\n");
-    exit(EXIT_FAILURE);
 }
-int main() {
-    Lista* intlist;
+/*int main() {
+   Lista* intlist;
 
     intlist = NULL;
     Lista_new(intlist, sizeof(int), free_data);
@@ -279,4 +276,4 @@ int main() {
         printf("%d", &nodo->valor);
         nodo = nodo->next;
     }
-}
+}*/
