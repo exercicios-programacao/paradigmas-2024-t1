@@ -19,13 +19,17 @@ typedef struct Lista {
     void (*free_data)(void*);
 } Lista;
 
-void Lista_new(Lista* list, int data_type_size, void (*free_data)(void*)) {
-    list->data_type_size = data_type_size;
-    list->free_data = free_data;
-    list->head = NULL;
-    list->tail = NULL;
-    list->current = NULL;
-    list->size = 0;
+void Lista_new(Lista* Lista, int data_type_size, void (*free_data)(void*)) {
+    Lista->data_type_size = data_type_size;
+    Lista->free_data = free_data;
+    Lista->head = NULL;
+    Lista->tail = NULL;
+    Lista->current = NULL;
+    Lista->size = 0;
+}
+
+void Lista_delete(Lista* lista){
+    
 }
 
 void Lista_pushFront(Lista* list, void* data) {
@@ -126,9 +130,6 @@ void Lista_current(Lista* list, void* dest) {
     }
 }
 
-/**
- * Insere um novo elemento na lista após o 'elemento atual'.
- */
 void Lista_insertAfter(Lista* lista, void* dado) {
     if (lista->current == NULL) {
         return;
