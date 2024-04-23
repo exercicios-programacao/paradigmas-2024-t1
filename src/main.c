@@ -20,14 +20,23 @@ int main(int argc, char** argv) {
 
     int nums[] = {1, 2, 3, 4, 5};
     for (int i = 0; i < 5; i++) {
-        Lista_pushFront(&intlist, &nums[i]);
+        Lista_pushBack(&intlist, &nums[i]);
+    }
+    
+    Lista_next(&intlist);
+    Lista_next(&intlist);
+    Lista_previous(&intlist);
+    Lista_removeCurrent(&intlist);
+
+    while (intlist.current != NULL) {
+        printf("%d\n", *(int*)intlist.current->data);
+        
+        Lista_next(&intlist);
     }
 
-    NodeLista* currentNode = intlist.head;
+    Lista_delete(&intlist);
+    int a = 1;
+    int b = 1;
     
-    while (currentNode != NULL) {
-        printf("%d\n", *(int*)currentNode->data);
-        currentNode = currentNode->next;
-        //to-do: está printando um valor negativo estranho no último node, verificar o que está acontecendo
-    }
+    printf("%d", int_cmp(&a, &b));
 }
