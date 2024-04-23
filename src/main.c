@@ -35,4 +35,8 @@ int main(int argc, char** argv) {
     }
 
     Lista_delete(&intlist);
+    int a = 1;
+    int b = 1;
+    
+    printf("%d", int_cmp(&a, &b));
 }

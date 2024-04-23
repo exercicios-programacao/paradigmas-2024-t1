@@ -153,7 +153,6 @@ void Lista_insertAfter(Lista* lista, void* dado) {
         return;
     }
 
-
     NodeLista* new_node = (NodeLista*) malloc(sizeof(NodeLista));
     if (new_node == NULL) {
         return;
@@ -227,5 +226,63 @@ int Lista_previous(Lista* lista){
     lista->current = previous_node;
 
     return 1;
+}
+
+//Compara dois inteiros
+int int_cmp(const int *lhs, const int* rhs){
+    int a = *((int*)lhs);
+    int b = *((int*)rhs);
+
+    if (a < b) {
+        return -1;
+    } else if (a > b) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int float_cmp(const void *lhs, const void* rhs){
+    float a = *((float*)lhs);
+    float b = *((float*)rhs);
+
+    if (a < b) {
+        return -1;
+    } else if (a > b) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int double_cmp(const void *lhs, const void* rhs){
+    double a = *((double*)lhs);
+    double b = *((double*)rhs);
+
+    if (a < b) {
+        return -1;
+    } else if (a > b) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int char_cmp(const void *lhs, const void* rhs){
+    char a = *((char*)lhs);
+    char b = *((char*)rhs);
+
+    if (a < b) {
+        return -1;
+    } else if (a > b) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+int Lista_search(){
+
 }
 
