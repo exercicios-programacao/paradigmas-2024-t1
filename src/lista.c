@@ -29,7 +29,25 @@ void Lista_new(Lista* Lista, int data_type_size, void (*free_data)(void*)) {
 }
 
 void Lista_delete(Lista* lista){
-    
+    NodeLista* node_pointer = lista->head;
+    NodeLista* next_node = NULL;
+
+    while (node_pointer != NULL) {
+        next_node = node_pointer->next;
+
+        if (lista->free_data != NULL) {
+            lista->free_data(node_pointer->data);
+        }
+
+        free(node_pointer->data);
+        free(node_pointer);
+
+        node_pointer = next_node;
+    }
+
+    lista->head = NULL;
+    lista->tail = NULL;
+    lista->current = NULL;
 }
 
 void Lista_pushFront(Lista* list, void* data) {

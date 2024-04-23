@@ -33,4 +33,6 @@ int main(int argc, char** argv) {
         
         Lista_next(&intlist);
     }
+
+    Lista_delete(&intlist);
 }
