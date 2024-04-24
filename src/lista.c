@@ -5,21 +5,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct NodeLista {
-    void* data;
-    struct NodeLista* next;
+typedef struct NodeLista
+{
+    void *data;
+    struct NodeLista *next;
 } NodeLista;
 
-typedef struct Lista {
+typedef struct Lista
+{
     int data_type_size;
-    NodeLista* head;
-    NodeLista* tail;
-    NodeLista* current;
+    NodeLista *head;
+    NodeLista *tail;
+    NodeLista *current;
     int size;
-    void (*free_data)(void*);
+    void (*free_data)(void *);
 } Lista;
 
-void Lista_new(Lista* Lista, int data_type_size, void (*free_data)(void*)) {
+void Lista_new(Lista *Lista, int data_type_size, void (*free_data)(void *))
+{
     Lista->data_type_size = data_type_size;
     Lista->free_data = free_data;
     Lista->head = NULL;
@@ -28,14 +31,17 @@ void Lista_new(Lista* Lista, int data_type_size, void (*free_data)(void*)) {
     Lista->size = 0;
 }
 
-void Lista_delete(Lista* lista){
-    NodeLista* node_pointer = lista->head;
-    NodeLista* next_node = NULL;
+void Lista_delete(Lista *lista)
+{
+    NodeLista *node_pointer = lista->head;
+    NodeLista *next_node = NULL;
 
-    while (node_pointer != NULL) {
+    while (node_pointer != NULL)
+    {
         next_node = node_pointer->next;
 
-        if (lista->free_data != NULL) {
+        if (lista->free_data != NULL)
+        {
             lista->free_data(node_pointer->data);
         }
 
@@ -50,8 +56,9 @@ void Lista_delete(Lista* lista){
     lista->current = NULL;
 }
 
-void Lista_pushFront(Lista* list, void* data) {
-    NodeLista* new_node = (NodeLista*) malloc(sizeof(NodeLista));
+void Lista_pushFront(Lista *list, void *data)
+{
+    NodeLista *new_node = (NodeLista *)malloc(sizeof(NodeLista));
 
     new_node->data = malloc(list->data_type_size);
 
@@ -61,29 +68,35 @@ void Lista_pushFront(Lista* list, void* data) {
 
     list->head = new_node;
 
-    if (list->tail == NULL) {
+    if (list->tail == NULL)
+    {
         list->tail = new_node;
     }
 
-    if (list->current == NULL) {
+    if (list->current == NULL)
+    {
         list->current = list->head;
     }
 
     list->size++;
 }
 
-void Lista_pushBack(Lista* list, void* data) {
-    if (list == NULL || data == NULL) {
+void Lista_pushBack(Lista *list, void *data)
+{
+    if (list == NULL || data == NULL)
+    {
         return;
     }
 
-    NodeLista* new_node = (NodeLista*) malloc(sizeof(NodeLista));
-    if (new_node == NULL) {
+    NodeLista *new_node = (NodeLista *)malloc(sizeof(NodeLista));
+    if (new_node == NULL)
+    {
         return;
     }
 
     new_node->data = malloc(list->data_type_size);
-    if (new_node->data == NULL) {
+    if (new_node->data == NULL)
+    {
         free(new_node);
         return;
     }
@@ -91,12 +104,16 @@ void Lista_pushBack(Lista* list, void* data) {
     memcpy(new_node->data, data, list->data_type_size);
     new_node->next = NULL;
 
-    if (list->head == NULL) {
+    if (list->head == NULL)
+    {
         list->head = new_node;
-    } else {
-        NodeLista* current_node = list->head;
-        
-        while (current_node->next != NULL) {
+    }
+    else
+    {
+        NodeLista *current_node = list->head;
+
+        while (current_node->next != NULL)
+        {
             current_node = current_node->next;
         }
 
@@ -105,56 +122,73 @@ void Lista_pushBack(Lista* list, void* data) {
 
     list->tail = new_node;
 
-    if (list->current == NULL) {
+    if (list->current == NULL)
+    {
         list->current = new_node;
     }
 
     list->size++;
 }
 
-int Lista_isEmpty(Lista* list) {
-    if (list->size == 0) {
+int Lista_isEmpty(Lista *list)
+{
+    if (list->size == 0)
+    {
         return 1;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }
 
-int Lista_size(Lista* list) {
+int Lista_size(Lista *list)
+{
     return list->size;
 }
 
-void Lista_first(Lista* list) {
+void Lista_first(Lista *list)
+{
     list->current = list->head;
 }
 
-void Lista_last(Lista* list) {
+void Lista_last(Lista *list)
+{
     list->current = list->tail;
 }
 
-int Lista_next(Lista* list) {
-    if (list->current != NULL && list->current->next != NULL){
+int Lista_next(Lista *list)
+{
+    if (list->current != NULL && list->current->next != NULL)
+    {
         list->current = list->current->next;
         return 1;
-    } else {
+    }
+    else
+    {
         list->current = NULL;
         return 0;
     }
 }
 
-void Lista_current(Lista* list, void* dest) {
-    if (list->current != NULL) {
+void Lista_current(Lista *list, void *dest)
+{
+    if (list->current != NULL)
+    {
         memcpy(dest, list->current->data, list->data_type_size);
     }
 }
 
-void Lista_insertAfter(Lista* lista, void* dado) {
-    if (lista->current == NULL) {
+void Lista_insertAfter(Lista *lista, void *dado)
+{
+    if (lista->current == NULL)
+    {
         return;
     }
 
-    NodeLista* new_node = (NodeLista*) malloc(sizeof(NodeLista));
-    if (new_node == NULL) {
+    NodeLista *new_node = (NodeLista *)malloc(sizeof(NodeLista));
+    if (new_node == NULL)
+    {
         return;
     }
 
@@ -165,37 +199,46 @@ void Lista_insertAfter(Lista* lista, void* dado) {
 
     lista->current->next = new_node;
 
-    if (lista->tail == lista->current) {
+    if (lista->tail == lista->current)
+    {
         lista->tail = new_node;
     }
 
     lista->size++;
 }
 
-void Lista_removeCurrent(Lista* lista){
-    if (lista->current == NULL) {
+void Lista_removeCurrent(Lista *lista)
+{
+    if (lista->current == NULL)
+    {
         return;
     }
 
-    NodeLista* node_pointer = lista->head;
-    NodeLista* previous_node = NULL;
+    NodeLista *node_pointer = lista->head;
+    NodeLista *previous_node = NULL;
 
-    while (node_pointer != lista->current) {
+    while (node_pointer != lista->current)
+    {
         previous_node = node_pointer;
         node_pointer = node_pointer->next;
     }
 
-    if (previous_node == NULL) {
+    if (previous_node == NULL)
+    {
         lista->head = node_pointer->next;
-    } else {
+    }
+    else
+    {
         previous_node->next = node_pointer->next;
     }
 
-    if (lista->tail == lista->current) {
+    if (lista->tail == lista->current)
+    {
         lista->tail = previous_node;
     }
 
-    if (lista->free_data != NULL) {
+    if (lista->free_data != NULL)
+    {
         lista->free_data(node_pointer->data);
     }
 
@@ -206,20 +249,24 @@ void Lista_removeCurrent(Lista* lista){
     lista->size--;
 }
 
-int Lista_previous(Lista* lista){
-    if (lista->current == NULL) {
+int Lista_previous(Lista *lista)
+{
+    if (lista->current == NULL)
+    {
         return 0;
     }
 
-    NodeLista* node_pointer = lista->head;
-    NodeLista* previous_node = NULL;
+    NodeLista *node_pointer = lista->head;
+    NodeLista *previous_node = NULL;
 
-    while (node_pointer != lista->current) {
+    while (node_pointer != lista->current)
+    {
         previous_node = node_pointer;
         node_pointer = node_pointer->next;
     }
 
-    if (previous_node == NULL) {
+    if (previous_node == NULL)
+    {
         return 0;
     }
 
@@ -228,61 +275,81 @@ int Lista_previous(Lista* lista){
     return 1;
 }
 
-//Compara dois inteiros
-int int_cmp(const int *lhs, const int* rhs){
+// Compara dois inteiros
+int int_cmp(const void *lhs, const void* rhs) {
     int a = *((int*)lhs);
     int b = *((int*)rhs);
-
-    if (a < b) {
+    
+    if (a < b)
+    {
         return -1;
-    } else if (a > b) {
+    }
+    else if (a > b)
+    {
         return 1;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }
 
-int float_cmp(const void *lhs, const void* rhs){
+//Compara dois longs
+int long_cmp(const void *lhs, const void* rhs) {
+    long a = *((long*)lhs);
+    long b = *((long*)rhs);
+    
+    if (a < b)
+    {
+        return -1;
+    }
+    else if (a > b)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+//Compara dois floats
+int float_cmp(const void *lhs, const void* rhs) {
     float a = *((float*)lhs);
     float b = *((float*)rhs);
-
-    if (a < b) {
+    
+    if (a < b)
+    {
         return -1;
-    } else if (a > b) {
+    }
+    else if (a > b)
+    {
         return 1;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }
 
-int double_cmp(const void *lhs, const void* rhs){
-    double a = *((double*)lhs);
-    double b = *((double*)rhs);
-
-    if (a < b) {
-        return -1;
-    } else if (a > b) {
-        return 1;
-    } else {
+int Lista_search(Lista *lista, void *key, int (*cmp)(const void *, const void *))
+{
+    if (lista == NULL || key == NULL || cmp == NULL)
+    {
         return 0;
     }
-}
 
-int char_cmp(const void *lhs, const void* rhs){
-    char a = *((char*)lhs);
-    char b = *((char*)rhs);
+    NodeLista *current_node = lista->head;
 
-    if (a < b) {
-        return -1;
-    } else if (a > b) {
-        return 1;
-    } else {
-        return 0;
+    while (current_node != NULL)
+    {
+        printf("Comparando %d com %d\n", *((int*)current_node->data), *((int*)key));
+        if (cmp(current_node->data, key) == 0)
+        {
+            return 1;
+        }
+        current_node = current_node->next;
     }
+
+    return 0;
 }
-
-
-int Lista_search(){
-
-}
-

@@ -34,9 +34,16 @@ int main(int argc, char** argv) {
         Lista_next(&intlist);
     }
 
-    Lista_delete(&intlist);
     int a = 1;
     int b = 1;
+
+    long c = 1l;
+    long d = 1l;
     
-    printf("%d", int_cmp(&a, &b));
+    int chave = 5;
+    
+    int indice = Lista_search(&intlist, &chave, int_cmp);
+    printf("Contem a chave: %d\n", indice);
+
+    Lista_delete(&intlist);
 }
