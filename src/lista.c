@@ -53,8 +53,8 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
     lista->free_data = free_data;
 }
 int Lista_delete(Lista* lista) {
-     if (lista-> == NULL) {
-        lista->free_data(lista);
+     if (lista->nodoAtual != NULL) {
+        lista->free_data(lista->nodoAtual);
     }
     if (lista->head == NULL) {
         lista->free_data(lista);
@@ -89,11 +89,13 @@ void Lista_pushFront(Lista* lista, void* valor) {
     Lista_Nodo* nodo;
     nodo = malloc(sizeof(Lista_Nodo));
     nodo->valor = malloc(sizeof(lista->data_size));
-    nodo->valor = valor;
+    memcpy(nodo->valor, valor, lista->data_size);
     nodo->next = NULL;
     nodo->prev = NULL;
     if (lista->head == NULL) {
+        
         lista->head = nodo;
+        memcpy(nodo->valor, valor, lista->data_size);
     }
     else {
         nodo->next = lista->head;
@@ -121,7 +123,7 @@ void Lista_pushBack(Lista* lista, void* valor) {
         exit(EXIT_FAILURE);
     }
 
-    memcpy(nodo->valor, valor, lista->data_size); //Copia o cont do valor fornecido p o nó da lista
+    memcpy(nodo->valor, valor, lista->data_size);
     nodo->next = NULL;
     nodo->prev = lista->tail;
 
@@ -172,10 +174,8 @@ int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*, void*)
 }
 
 void Lista_first(Lista* lista) {
-    if (lista->head != NULL){
-        memcpy(lista->nodoAtual->valor, lista->head->valor,  lista->data_size);
-        memcpy(lista->nodoAtual->next, lista->head->next, sizeof(lista->head->next));
-        memcpy(lista->nodoAtual->prev, lista->head->prev, sizeof(lista->head->prev));
+    if (lista->head != NULL && lista->tail != NULL){
+        lista->nodoAtual = &lista->head;
     }
     else
     {
@@ -184,10 +184,8 @@ void Lista_first(Lista* lista) {
 }
 
 void Lista_last(Lista* lista) { // Implementação da func last para ajustar o 'elemento atual' da lista para o último elemento
-    if (lista->last != NULL){
-        memcpy(lista->nodoAtual->valor, lista->last->valor, lista->data_size);
-        memcpy(lista->nodoAtual->next, lista->last->next, sizeof(lista->last->next));
-        memcpy(lista->nodoAtual->prev, lista->last->prev, sizeof(lista->last->prev));
+    if (lista->head != NULL && lista->tail != NULL){
+        lista->nodoAtual = &lista->tail;
     }
     else
     {
@@ -197,13 +195,7 @@ void Lista_last(Lista* lista) { // Implementação da func last para ajustar o '
 
 void Lista_current(Lista* lista, void* dest) { // Implementação da func current para ter o valor do 'elemento atual'
     if (lista->nodoAtual != NULL){
-        Lista_nodo * nodo_destino;
-        nodo_destino = malloc(sizeof(Lista_Nodo));
-        dest = nodo_destino
-        
-        memcpy(dest->valor, lista->nodoAtual->valor, lista->data_size);
-        memcpy(dest->next, lista->nodoAtual->next, sizeof(lista->nodoAtual->next));
-        memcpy(dest->prev, lista->nodoAtual->prev, sizeof(lista->nodoAtual->prev));
+         memcpy(dest, lista->nodoAtual->valor, lista->data_size);
     }
     else
     {
@@ -212,21 +204,18 @@ void Lista_current(Lista* lista, void* dest) { // Implementação da func curren
 }
 
 int Lista_next(Lista* lista) { // Implementação da função next p avançar para o próximo 'elemento atual'
-    if (lista->nodoAtual != NULL){
-        memcpy(lista->nodoAtual->valor, lista->nodoAtual->valor, lista->data_size);
-        memcpy(lista->nodoAtual->next, lista->nodoAtual->next, sizeof(lista->nodoAtual->next));
-        memcpy(lista->nodoAtual->prev, lista->nodoAtual->prev, sizeof(lista->nodoAtual->prev));
+    if (lista->nodoAtual == NULL){
+        Lista_first(lista);
     }
-    else
-    {
-        lista->nodoAtual=NULL;
+    if(lista->nodoAtual != NULL && lista->nodoAtual->next != NULL ){
+        lista->nodoAtual = &lista->nodoAtual->next;
     }
-    
-    if (lista->tail != NULL && lista->tail->next != NULL) {
-        lista->tail = lista->tail->next; // Ajusta o 'elemento atual' para o próximo elemento
+    if(lista->nodoAtual!=NULL){
         return 1; // Existe um próximo elemento
     }
-    return 0; // Não existe próximo elemento
+    else{
+        return 0; // Não existe próximo elemento
+    }
 }
 
 void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*, void*)) {
