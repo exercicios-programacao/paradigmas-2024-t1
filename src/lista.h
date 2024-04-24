@@ -6,11 +6,17 @@
  * abaixo. Você pode alterá-las com preferir.
  */
 typedef struct _lista_nodo {
-    void* valor;
-    struct _lista_nodo* next;
+		void* valor;
+		struct _lista_nodo* next;
 } ListaNodo;
 
 typedef struct {
+		ListaNodo* head;
+		ListaNodo* tail;
+		ListaNodo* elementoAtual;
+		int size;
+		int data_size;
+		void (*free_data)(void*);
 } Lista;
 
 
@@ -89,10 +95,10 @@ void Lista_pushBack(Lista* lista, void* valor);
  * diferente de zero (true) se o valor foi encontrado.
  */
 int Lista_search(
-    Lista* lista,
-    void* chave,
-    void* dest,
-    int (*cmp)(void*,void*)
+		Lista* lista,
+		void* chave,
+		void* dest,
+		int (*cmp)(void*,void*)
 );
 
 /**
