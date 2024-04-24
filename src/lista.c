@@ -12,9 +12,10 @@ typedef struct lista {
     int data_size;
     struct _lista_nodo* head;
     struct _lista_nodo* tail;
+    struct _lista_nodo* nodoAtual;
     int size_list;
     void (*free_data)(void*);
-    int (*cmp)(void*, void*);
+    //int (*cmp)(void*, void*);
 }Lista;
 
 // Define a struct para o no
@@ -35,18 +36,26 @@ int int_cmp(void* lhs, void* rhs)
 {
     return *(int*)lhs - *(int*)rhs;
 }
+double double_cmp(void* lhs, void* rhs)
+{
+    return *(double_cmp*)lhs - *(double_cmp*)rhs;
+}
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
     Lista* novaLista;
     novaLista = malloc(sizeof(Lista));
     novaLista->head = NULL;
     novaLista->tail = NULL;
+    novaLista->nodoAtual = NULL;
     novaLista->data_size = data_size;
     novaLista->size_list = 0;
     lista = novaLista;
     lista->free_data = free_data;
 }
 int Lista_delete(Lista* lista) {
+     if (lista-> == NULL) {
+        lista->free_data(lista);
+    }
     if (lista->head == NULL) {
         lista->free_data(lista);
         return 1;
@@ -157,33 +166,62 @@ int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*, void*)
                 *((void**)dest) = nodo->valor;
             return 1; // Elemento encontrado
         }
-        nodo = nodo->next;
+        nodo = nodo->;
     }
     return 0; // Elemento não encontrado
 }
 
 void Lista_first(Lista* lista) {
-    if (lista->head != NULL)
-        lista->tail = NULL; // Ajusta o 'elemento atual' da lista
+    if (lista->head != NULL){
+        memcpy(lista->nodoAtual->valor, lista->head->valor,  lista->data_size);
+        memcpy(lista->nodoAtual->next, lista->head->next, sizeof(lista->head->next));
+        memcpy(lista->nodoAtual->prev, lista->head->prev, sizeof(lista->head->prev));
+    }
+    else
+    {
+        lista->nodoAtual=NULL;
+    }
 }
 
 void Lista_last(Lista* lista) { // Implementação da func last para ajustar o 'elemento atual' da lista para o último elemento
-    if (lista->head != NULL) {
-        Lista_Nodo* nodo = lista->head; // Inicializa ponteiro p percorrer a lista
-        while (nodo->next != NULL) {
-            nodo = nodo->next;
-        }
-        lista->tail = nodo; // Ajusta o 'elemento atual' da lista
+    if (lista->last != NULL){
+        memcpy(lista->nodoAtual->valor, lista->last->valor, lista->data_size);
+        memcpy(lista->nodoAtual->next, lista->last->next, sizeof(lista->last->next));
+        memcpy(lista->nodoAtual->prev, lista->last->prev, sizeof(lista->last->prev));
+    }
+    else
+    {
+        lista->nodoAtual=NULL;
     }
 }
 
 void Lista_current(Lista* lista, void* dest) { // Implementação da func current para ter o valor do 'elemento atual'
-    if (lista->tail != NULL && dest != NULL) {     // Verifica C 'elemento atual' não é nulo e se o destino também não é
-        *((void**)dest) = lista->tail->valor;
+    if (lista->nodoAtual != NULL){
+        Lista_nodo * nodo_destino;
+        nodo_destino = malloc(sizeof(Lista_Nodo));
+        dest = nodo_destino
+        
+        memcpy(dest->valor, lista->nodoAtual->valor, lista->data_size);
+        memcpy(dest->next, lista->nodoAtual->next, sizeof(lista->nodoAtual->next));
+        memcpy(dest->prev, lista->nodoAtual->prev, sizeof(lista->nodoAtual->prev));
+    }
+    else
+    {
+        dest=NULL;
     }
 }
 
 int Lista_next(Lista* lista) { // Implementação da função next p avançar para o próximo 'elemento atual'
+    if (lista->nodoAtual != NULL){
+        memcpy(lista->nodoAtual->valor, lista->nodoAtual->valor, lista->data_size);
+        memcpy(lista->nodoAtual->next, lista->nodoAtual->next, sizeof(lista->nodoAtual->next));
+        memcpy(lista->nodoAtual->prev, lista->nodoAtual->prev, sizeof(lista->nodoAtual->prev));
+    }
+    else
+    {
+        lista->nodoAtual=NULL;
+    }
+    
     if (lista->tail != NULL && lista->tail->next != NULL) {
         lista->tail = lista->tail->next; // Ajusta o 'elemento atual' para o próximo elemento
         return 1; // Existe um próximo elemento
