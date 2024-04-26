@@ -93,23 +93,25 @@ void Lista_pushFront(Lista* lista, void* valor) {
     nodo->next = NULL;
     nodo->prev = NULL;
     if (lista->head == NULL) {
-        
         lista->head = nodo;
-        memcpy(nodo->valor, valor, lista->data_size);
+        //Se a cabeça é vazia a cauda tbm é a cabeca
+        lista->tail = nodo;
     }
     else {
         nodo->next = lista->head;
         lista->head = nodo;
-        if (lista->tail == NULL) {
-            lista->tail == lista->head;
-        }
     }
     lista->size_list += 1;
     lista->free_data(nodo);
 }
 
 void Lista_pushBack(Lista* lista, void* valor) {
-    Lista_Nodo* nodo = malloc(sizeof(Lista_Nodo)); // Aloca mem p um nv nó da lista
+    Lista_Nodo* nodo;
+    nodo = malloc(sizeof(Lista_Nodo));
+    nodo->valor = malloc(sizeof(lista->data_size));
+    memcpy(nodo->valor, valor, lista->data_size);
+    nodo->next = NULL;
+    nodo->prev = NULL;
 
     if (nodo == NULL) {
         fprintf(stderr, "Erro: Falha ao alocar memória para o novo nó.\n");
@@ -129,15 +131,18 @@ void Lista_pushBack(Lista* lista, void* valor) {
 
     if (lista->head == NULL) {
         lista->head = nodo;
+        //vau ser adicionado para o if ou o else
+        //Se a cabeça é vazia a cauda tbm é a cabeca
+        //lista->tail = nodo
     }
     else {
+        nodo->prev = lista->tail;
         lista->tail->next = nodo;
     }
-
     lista->tail = nodo;
     lista->size_list++;
+    lista->free_data(nodo);
 }
-
 
 /*void Lista_pushBack(Lista* lista, void* valor){
     Lista_Nodo* nodo;
@@ -267,26 +272,30 @@ void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCu
 }
 
 void Lista_insertAfter(Lista* lista, void* dado) {
+    Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
+    novo_nodo->valor = malloc(lista->data_size);
+    memcpy(novo_nodo->valor, dado, lista->data_size);
+    if(lista->head==NULL){
+         lista->head = nodo;
+        //Se a cabeça é vazia a cauda tbm é a cabeca
+        lista->tail = nodo
+    }
     if (lista->tail != NULL) {
-        Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
-        if (novo_nodo != NULL) {
-            novo_nodo->valor = malloc(lista->data_size);
-            if (novo_nodo->valor != NULL) {
-                memcpy(novo_nodo->valor, dado, lista->data_size);
-                novo_nodo->next = lista->tail->next;
-                if (novo_nodo->next != NULL) {
-                    novo_nodo->next->prev = novo_nodo;
-                }
-                else {
-                    lista->tail = novo_nodo;
-                }
-                novo_nodo->prev = lista->tail;
-                lista->tail->next = novo_nodo;
-                lista->size_list++;
-                return;
+        if (novo_nodo->valor != NULL) {
+          
+            novo_nodo->next = lista->tail->next;
+            if (novo_nodo->next != NULL) {
+                novo_nodo->next->prev = novo_nodo;
             }
-            free(novo_nodo);
+            else {
+                lista->tail = novo_nodo;
+            }
+            novo_nodo->prev = lista->tail;
+            lista->tail->next = novo_nodo;
+            lista->size_list++;
+            return;
         }
+        free(novo_nodo);
     }
 }
 /*int main() {
