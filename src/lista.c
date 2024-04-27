@@ -15,7 +15,7 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
         lista->data_size = data_size;
         lista->free_data = free_data;
     }
-    return lista;
+   
 }
 
 void Lista_delete(Lista* lista){
