@@ -8,30 +8,28 @@
 #include "lista.h"
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
-
-    lista->size = 0;
-    lista->data_size = data_size;
-
+    lista->primeiro = NULL;
+    lista->tamanho = 0;
 }
 
 void Lista_delete(Lista* lista){
-    free(lista);
+
 }
 
 int Lista_isEmpty(Lista* lista){
-
-    if(lista->size == 0){
+    if(lista->primeiro == NULL){
         return 1;
     }
     return 0;
 }
 
 int Lista_size(Lista* lista){
-    return lista->size;
+    return lista->tamanho;
 }
 
 void Lista_pushFront(Lista* lista, void* valor){
-
+    lista->primeiro->prox = *lista->primeiro;
+    lista->primeiro->valor = valor;
 }
 
 void Lista_pushBack(Lista* lista, void* valor){

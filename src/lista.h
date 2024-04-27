@@ -5,14 +5,14 @@
  * Você deve definir a estrutura da lista utilizando as duas estruturas
  * abaixo. Você pode alterá-las com preferir.
  */
-typedef struct _lista_nodo {
+typedef struct nodo {
     void* valor;
-    struct _lista_nodo* next;
-} ListaNodo;
+    struct node* prox;
+} Nodo;
 
 typedef struct {
-    int size;
-    int data_size;
+     Nodo *primeiro;
+     int tamanho;
 } Lista;
 
 

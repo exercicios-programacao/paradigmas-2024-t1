@@ -14,6 +14,8 @@
 #include "lista.h"
 
 int main(int argc, char** argv) {
-    printf("Hello World!\n");
-    return 0;
+
+    Lista lista;
+
+    Lista_new(lista, 8);
 }
