@@ -11,6 +11,7 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
     if (lista) {
         lista->head = NULL;
         lista->tail = NULL;
+        lista->cursor = NULL;
         lista->size = 0;
         lista->data_size = data_size;
         lista->free_data = free_data;
@@ -30,6 +31,7 @@ void Lista_delete(Lista* lista) {
     }
     lista->head = NULL;
     lista->tail = NULL;
+    lista->cursor = NULL;
     lista->size = 0;
 }
 
@@ -42,63 +44,36 @@ int Lista_size(Lista* lista) {
 }
 
 void Lista_pushFront(Lista* lista, void* valor) {
-    if (lista == NULL || valor == NULL) {
-        return;
-    }
-
     ListaNodo* novo = (ListaNodo*)malloc(sizeof(ListaNodo));
-    if (novo == NULL) {
-        return;
-    }
-
     novo->valor = malloc(lista->data_size);
-    if (novo->valor == NULL) {
-        free(novo);
-        return;
-    }
-
     memcpy(novo->valor, valor, lista->data_size);
     novo->next = lista->head;
-    lista->head = novo;
-    if (lista->tail == NULL) {
+    novo->prev = NULL;
+    if (lista->head != NULL) {
+        lista->head->prev = novo;
+    } else {
         lista->tail = novo;
     }
+    lista->head = novo;
     lista->size++;
 }
 
 void Lista_pushBack(Lista* lista, void* valor) {
-    if (lista == NULL || valor == NULL) {
-        return;
-    }
-
     ListaNodo* novo = (ListaNodo*)malloc(sizeof(ListaNodo));
-    if (novo == NULL) {
-        return;
-    }
-
     novo->valor = malloc(lista->data_size);
-    if (novo->valor == NULL) {
-        free(novo);
-        return;
-    }
-
     memcpy(novo->valor, valor, lista->data_size);
     novo->next = NULL;
-    if (lista->tail == NULL) {
-        lista->head = novo;
-        lista->tail = novo;
-    } else {
+    novo->prev = lista->tail;
+    if (lista->tail != NULL) {
         lista->tail->next = novo;
-        lista->tail = novo;
+    } else {
+        lista->head = novo;
     }
+    lista->tail = novo;
     lista->size++;
 }
 
-int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*, void*)) {
-    if (lista == NULL || chave == NULL || dest == NULL || cmp == NULL) {
-        return 0;
-    }
-
+int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*)) {
     ListaNodo* current = lista->head;
     while (current != NULL) {
         if (cmp(current->valor, chave) == 0) {
@@ -110,20 +85,19 @@ int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*, void*)
     return 0;
 }
 
-void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*, void*)) {
-    if (lista == NULL || chave == NULL || cmp == NULL) {
-        return;
-    }
-
+void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)) {
     ListaNodo* current = lista->head;
-    ListaNodo* previous = NULL;
-
     while (current != NULL) {
         if (cmp(current->valor, chave) == 0) {
-            if (previous != NULL) {
-                previous->next = current->next;
+            if (current->prev != NULL) {
+                current->prev->next = current->next;
             } else {
                 lista->head = current->next;
+            }
+            if (current->next != NULL) {
+                current->next->prev = current->prev;
+            } else {
+                lista->tail = current->prev;
             }
             if (lista->free_data != NULL) {
                 lista->free_data(current->valor);
@@ -133,10 +107,20 @@ void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*, void*)) {
             lista->size--;
             return;
         }
-        previous = current;
         current = current->next;
     }
 }
 
+void Lista_first(Lista* lista) {
+    lista->cursor = lista->head;
+}
 
+void Lista_last(Lista* lista) {
+    lista->cursor = lista->tail;
+}
 
+void Lista_current(Lista* lista, void* dest) {
+    if (lista->cursor != NULL) {
+        memcpy(dest, lista->cursor->valor, lista->data_size);
+    }
+}
