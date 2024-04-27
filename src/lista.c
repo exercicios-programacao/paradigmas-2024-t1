@@ -5,6 +5,7 @@
 #include "lista.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <cstring>
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
     if (lista) {
