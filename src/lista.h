@@ -7,11 +7,13 @@
  */
 typedef struct nodo {
     void* valor;
-    struct node* prox;
+    struct nodo* prox;
 } Nodo;
 
 typedef struct {
      Nodo *primeiro;
+     Nodo *ultimo;
+     Nodo *atual;
      int tamanho;
 } Lista;
 

@@ -9,6 +9,7 @@
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
     lista->primeiro = NULL;
+    lista->ultimo = *lista->primeiro;
     lista->tamanho = 0;
 }
 
@@ -33,7 +34,7 @@ void Lista_pushFront(Lista* lista, void* valor){
 }
 
 void Lista_pushBack(Lista* lista, void* valor){
-
+    lista->ultimo->valor = valor;
 }
 
 int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*)){
@@ -41,19 +42,23 @@ int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*))
 }
 
 void Lista_first(Lista* lista){
-    return lista[0];
+    lista->atual = lista->primeiro;
 }
 
 void Lista_last(Lista* lista){
-    return lista[lista->size - 1];
+    lista->atual = lista->ultimo;
 }
 
 int Lista_next(Lista* lista){
+    if(lista->atual == lista->ultimo){
+        return 0;
+    }
 
+    return lista->atual->prox;
 }
 
 void Lista_current(Lista* lista, void* dest){
-
+    dest = lista->atual->valor;
 }
 
 void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)){
