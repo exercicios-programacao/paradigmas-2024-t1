@@ -5,7 +5,6 @@
 #include "lista.h"
 #include <stddef.h>
 #include <stdlib.h>
-#include <cstring>
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
     if (lista) {
@@ -15,15 +14,23 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
         lista->data_size = data_size;
         lista->free_data = free_data;
     }
-   
+    return lista;
 }
 
-void Lista_delete(Lista* lista){
-  if (lista) {
-        lista->head = NULL;
-        lista->tail = NULL; 
-        lista->size = 0;
+void Lista_delete(Lista* lista) {
+    ListaNodo* current = lista->head;
+    while (current != NULL) {
+        ListaNodo* next = current->next;
+        if (lista->free_data != NULL) {
+            lista->free_data(current->valor);
+        }
+        free(current->valor);
+        free(current);
+        current = next;
     }
+    lista->head = NULL;
+    lista->tail = NULL;
+    lista->size = 0;
 }
 
 int Lista_isEmpty(Lista* lista) {
@@ -35,57 +42,42 @@ int Lista_size(Lista* lista) {
 }
 
 void Lista_pushFront(Lista* lista, void* valor) {
-    ListaNodo* novo_nodo = (ListaNodo*)malloc(sizeof(ListaNodo));
-    if (novo_nodo == NULL) {
-        return;
+    ListaNodo* novo = (ListaNodo*)malloc(sizeof(ListaNodo));
+    novo->valor = malloc(lista->data_size);
+    memcpy(novo->valor, valor, lista->data_size);
+    novo->next = lista->head;
+    lista->head = novo;
+    if (lista->tail == NULL) {
+        lista->tail = novo;
     }
-    novo_nodo->valor = valor;
-    novo_nodo->next = lista->head;
-
-    if (Lista_isEmpty(lista)) {
-        lista->tail = novo_nodo;
-    }
-
-    lista->head = novo_nodo;
     lista->size++;
 }
 
 void Lista_pushBack(Lista* lista, void* valor) {
-    ListaNodo* novo_nodo = (ListaNodo*)malloc(sizeof(ListaNodo));
-    if (novo_nodo == NULL) {
-        return;
-    }
-    novo_nodo->valor = valor;
-    novo_nodo->next = NULL;
-
-    if (Lista_isEmpty(lista)) {
-        lista->head = novo_nodo;
+    ListaNodo* novo = (ListaNodo*)malloc(sizeof(ListaNodo));
+    novo->valor = malloc(lista->data_size);
+    memcpy(novo->valor, valor, lista->data_size);
+    novo->next = NULL;
+    if (lista->tail == NULL) {
+        lista->head = novo;
+        lista->tail = novo;
     } else {
-        lista->tail->next = novo_nodo;
+        lista->tail->next = novo;
+        lista->tail = novo;
     }
-
-    lista->tail = novo_nodo;
     lista->size++;
 }
 
-int Lista_search(
-        Lista* lista, 
-        void* chave, 
-        void* dest, 
-        int (*cmp)(void*,void*)) {
+int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*)) {
     ListaNodo* current = lista->head;
-
     while (current != NULL) {
         if (cmp(current->valor, chave) == 0) {
-            if (dest != NULL) {
-                memcpy(dest, current->valor, lista->data_size);
-            }
-            return 1;
+            memcpy(dest, current->valor, lista->data_size);
+            return 1; 
         }
         current = current->next;
     }
-
-    return 0;
+    return 0; 
 }
 
 void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)) {
@@ -94,27 +86,22 @@ void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)) {
 
     while (current != NULL) {
         if (cmp(current->valor, chave) == 0) {
-            if (previous == NULL) {
-                lista->head = current->next;
-                if (lista->head == NULL) {
-                    lista->tail = NULL;
-                }
-            } else {
+            if (previous != NULL) {
                 previous->next = current->next;
-                if (current->next == NULL) {
-                    lista->tail = previous;
-                }
+            } else {
+                lista->head = current->next;
             }
-
-            if (lista->free_data) {
+            if (lista->free_data != NULL) {
                 lista->free_data(current->valor);
             }
+            free(current->valor);
             free(current);
             lista->size--;
-            return; 
+            return;
         }
         previous = current;
         current = current->next;
     }
 }
+
 
