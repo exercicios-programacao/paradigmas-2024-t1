@@ -10,12 +10,15 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "lista.h"
 
 int main(int argc, char** argv) {
 
-    Lista lista;
+    Lista *lista;
 
-    Lista_new(lista, 8);
+    Lista_new(lista, sizeof(int), NULL);
+
+    return 0;
 }

@@ -9,12 +9,12 @@
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
     lista->primeiro = NULL;
-    lista->ultimo = *lista->primeiro;
+    lista->ultimo = lista->primeiro;
     lista->tamanho = 0;
 }
 
 void Lista_delete(Lista* lista){
-
+    free(lista);
 }
 
 int Lista_isEmpty(Lista* lista){
@@ -29,7 +29,7 @@ int Lista_size(Lista* lista){
 }
 
 void Lista_pushFront(Lista* lista, void* valor){
-    lista->primeiro->prox = *lista->primeiro;
+    lista->primeiro->prox = lista->primeiro;
     lista->primeiro->valor = valor;
 }
 
@@ -54,11 +54,11 @@ int Lista_next(Lista* lista){
         return 0;
     }
 
-    return lista->atual->prox;
+    return lista->atual->prox->valor;
 }
 
 void Lista_current(Lista* lista, void* dest){
-    dest = lista->atual->valor;
+
 }
 
 void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)){
