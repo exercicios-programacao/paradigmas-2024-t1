@@ -229,7 +229,7 @@ int Lista_next(Lista* lista) { // Implementação da função next p avançar pa
         Lista_first(lista);
     }
     if(*lista->nodoAtual != NULL && (*lista->nodoAtual)->next != NULL ){
-        lista->nodoAtual = (&lista->nodoAtual)->next;
+        lista->nodoAtual = &((*lista->nodoAtual)->next);
     }
     if(lista->nodoAtual!=NULL){
         return 1; // Existe um próximo elemento
@@ -241,7 +241,7 @@ int Lista_next(Lista* lista) { // Implementação da função next p avançar pa
 
 void Lista_current(Lista* lista, void* dest) { // Implementação da func current para ter o valor do 'elemento atual'
     if (lista->nodoAtual != NULL){
-         memcpy(dest, lista->nodoAtual->valor, lista->data_size);
+         memcpy(dest, (*lista->nodoAtual)->valor, lista->data_size);
     }
     else
     {
@@ -250,40 +250,43 @@ void Lista_current(Lista* lista, void* dest) { // Implementação da func curren
 }
 
 void Lista_insertAfter(Lista* lista, void* dado) {
-Lista_Nodo* nodo_pecorre_lista  = malloc(sizeof(Lista_Nodo));
-    if(lista->nodoAtual != NULL && lista->head != NULL){
-        nodo_pecorre_lista->head = &lista->head;
-        while (nodo_pecorre_lista != NULL) { // Percorre a lista
-            //while(lista->head!=NULL){
-                //lista->head =lista->head->next=
-                if (cmp(lista->nodoAtual->valor, nodo_pecorre_lista->valor) == 0) {  // Compara o valor do nó com a chave
-                    //
-                     Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
-                     novo_nodo->valor = malloc(lista->data_size);
-                     memcpy(novo_nodo->valor, dado, lista->data_size);
-                     novo_nodo->next = &nodo_pecorre_lista->next;
-                     novo_nodo->prev = &nodo_pecorre_lista->prev;
-                    
-                    Lista_Nodo* enderecoNaListaNovoDado = &lista->nodoAtual->next;
-                    enderecoNaListaNovoDado = novo_nodo;
-                    //Se o proximo elemento for a cauda substituir a cauda pelo novo
-                     if (novo_nodo->next == NULL) {
-                        lista->tail = nodo_pecorre_lista;
-                    }
-                        lista->size_list += 1;
-                        lista->free_data(novo_nodo);
-                    //
-                break;
-                }else{
-                    nodo_pecorre_lista = nodo_pecorre_lista->next;
-                }
-           // }
+    //nodoatual
+    //nodoatual->next = dado
+    //nodoatual->next ->prev = nodoatual->next;
+    //dado->next = nodoatual->next;
+    Lista_Nodo* novo_nodo  = malloc(sizeof(Lista_Nodo));
+    novo_nodo->valor = malloc(lista->data_size);
+    memcpy(novo_nodo->valor, dado, lista->data_size);
+    novo_nodo->next=NULL;
+    novo_nodo->prev=NULL;
+    if(lista->nodoAtual != NULL){
+        if(*(lista->nodoAtual)->next != NULL){
+            novo_nodo->next = &((lista->nodoAtual)->next);
+            novo_nodo->prev = &lista->nodoAtual;
+            &((lista->nodoAtual)->next) = novo_nodo;
         }
     }else if(lista->head==NULL){
-         lista->head = nodo;
+         lista->head = novo_nodo;
         //Se a cabeça é vazia a cauda tbm é a cabeca
-        lista->tail = nodo
+        lista->tail = novo_nodo
+    }else if (novo_nodo->next == NULL) {
+            lista->tail = novo_nodo;
     }
+    lista->size_list += 1;
+    lista->free_data(novo_nodo);
+    if(lista->nodoAtual != NULL && lista->head != NULL){
+        Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
+        novo_nodo->valor = malloc(lista->data_size);
+        memcpy(novo_nodo->valor, dado, lista->data_size);
+        novo_nodo->next = &nodo_pecorre_lista->next;
+        novo_nodo->prev = &nodo_pecorre_lista->prev;
+        Lista_Nodo* enderecoNaListaNovoDado = &((lista->nodoAtual)->next);
+        enderecoNaListaNovoDado = novo_nodo;
+        //Se o proximo elemento for a cauda substituir a cauda pelo novo
+        
+         
+
+    
 }
 
 void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCurrent p remover o 'elemento atual' da lista
