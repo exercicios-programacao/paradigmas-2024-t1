@@ -1,0 +1,143 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct nodo
+{
+  int v;
+  struct nodo *prox;
+} nodo_teste;
+
+nodo_teste *head = NULL;
+nodo_teste *corrente = NULL;
+
+nodo_teste * criar_lista(int valor)
+{
+  nodo_teste * p = (nodo_teste*)malloc(sizeof(nodo_teste));
+  if(p == NULL)
+  {
+    printf("\nFalha ao alocar memoria\n");
+    return NULL;
+  }
+  p -> v = valor;
+  p -> prox = NULL;
+  head = corrente = p;
+  return p;
+}
+
+nodo_teste * adicionar_lista(int v)
+{
+  if(head == NULL)
+  {
+    return criar_lista(v);
+  }
+  nodo_teste * p = (nodo_teste*)malloc(sizeof(nodo_teste));
+  if(p == NULL)
+  {
+    printf("\nFalla ao alocar memoria\n");
+    return NULL;
+  }
+  p -> v = v;
+  p -> prox = NULL;
+  corrente -> prox = p;
+  corrente = p;
+  return p;
+}
+
+void imprimir_lista()
+{
+  nodo_teste * aux = head;
+  while(aux != NULL)
+    {
+      printf("%d\n", aux -> v);
+      aux = aux -> prox;
+    }
+}
+
+int lista_vazia() 
+{
+  if(head == NULL)
+  {
+    return 1;
+  }
+  return 0;
+}
+
+nodo_teste * buscar_elemento(int v, nodo_teste **ant) 
+{
+  if(lista_vazia() == 1)
+  {
+    return NULL;
+  }
+  nodo_teste * p = head;
+  nodo_teste * aux_ant = NULL;
+  int achou = 0;
+  while(p != NULL)
+    {
+      if(p -> v)
+      {
+        achou = 1;
+        break;
+      }
+      aux_ant = p;
+      p = p -> prox;
+    }
+  if(achou == 1)
+  {
+    if(ant)
+    {
+      *ant = aux_ant;
+    }
+    return p;
+  }
+  return NULL;
+}
+
+int remover_elemento(int v)
+{
+  nodo_teste * ant = NULL;
+  nodo_teste * elem = buscar_elemento(v, &ant);
+  if(elem == NULL)
+  {
+    return 0;
+  }
+  if(ant != NULL)
+  {
+    ant -> prox = elem -> prox;
+  }
+  if(elem == corrente)
+  {
+    corrente = ant;
+  }
+  if(elem == head)
+  {
+    head = elem -> prox;
+  }
+  free(elem);
+  elem = NULL;
+  return 1;
+}
+
+int tamanho_lista()
+{
+  if(lista_vazia())
+  {
+    return 0;
+  }
+  nodo_teste * aux = head;
+  int tam = 0;
+
+  while(aux != corrente)
+    {
+      aux = aux -> prox;
+      tam++;
+    }
+  return tam;
+}
+
+int main(void) {
+  printf("Hello World\n");
+
+  nodo_teste * n = criar_lista(4);
+  
+  return 0;
+}
