@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct lista {
+/*typedef struct lista {
     int data_size;
     struct _lista_nodo* head;
     struct _lista_nodo* tail;
@@ -24,7 +24,7 @@ typedef struct _lista_nodo {
     struct _lista_nodo* next;         // * para a prox celula
     struct _lista_nodo* prev;         // * para a celula anterior
 }Lista_Nodo;
-
+*/
 void free_data(void* nodo) {
     if (nodo != NULL)
     {
