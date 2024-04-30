@@ -155,3 +155,24 @@ void Lista_insertAfter(Lista *lista, void *dado) {
     }
     lista->size++;
 }
+
+int main() {
+    Lista lista;
+    Lista_new(&lista, sizeof(int), free);
+
+    int valores[] = {1, 2, 3, 4, 5};
+    for (int i = 0; i < 5; i++) {
+        Lista_pushBack(&lista, &valores[i]);
+    }
+
+    int valor;
+    Lista_first(&lista);
+    do {
+        Lista_current(&lista, &valor);
+        printf("%d\n", valor);
+    } while (Lista_next(&lista));
+
+    Lista_delete(&lista);
+
+    return 0;
+
