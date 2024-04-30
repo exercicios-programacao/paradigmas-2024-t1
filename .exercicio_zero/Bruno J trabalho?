@@ -1,132 +1,59 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 typedef struct nodo
 {
-  int v;
+  void *dado;
+  int data_size;
   struct nodo *prox;
-} nodo_teste;
+  struct nodo *ante;
+}nodo;
 
-nodo_teste *head = NULL;
-nodo_teste *corrente = NULL;
+nodo *head = NULL;
+nodo *tail = NULL;
+nodo *posicao = NULL;
 
-nodo_teste * criar_lista(int valor)
+//ALERTA, NÃO GENÉRICO//
+
+void Lista_new(nodo* lista, int data_size, void (*free_data)(void*)/*?*/)
 {
-  nodo_teste * p = (nodo_teste*)malloc(sizeof(nodo_teste));
-  if(p == NULL)
-  {
-    printf("\nFalha ao alocar memoria\n");
-    return NULL;
-  }
-  p -> v = valor;
-  p -> prox = NULL;
-  head = corrente = p;
-  return p;
+  nodo *novol = (nodo*)malloc(sizeof(data_size));
+  novol -> dado = dado;
+  novol -> data_size = data_size;
+  novol -> prox = NULL;
+  novol -> ante = NULL;
+  head = tail = posicao = novol;
 }
 
-nodo_teste * adicionar_lista(int v)
+void Lista_delete(nodo* lista)
 {
-  if(head == NULL)
-  {
-    return criar_lista(v);
-  }
-  nodo_teste * p = (nodo_teste*)malloc(sizeof(nodo_teste));
-  if(p == NULL)
-  {
-    printf("\nFalla ao alocar memoria\n");
-    return NULL;
-  }
-  p -> v = v;
-  p -> prox = NULL;
-  corrente -> prox = p;
-  corrente = p;
-  return p;
+  
+  free(lista);
 }
 
-void imprimir_lista()
-{
-  nodo_teste * aux = head;
-  while(aux != NULL)
-    {
-      printf("%d\n", aux -> v);
-      aux = aux -> prox;
-    }
-}
-
-int lista_vazia() 
+int Lista_isEmpty() /*Parece pronto*/
 {
   if(head == NULL)
   {
     return 1;
   }
-  return 0;
-}
-
-nodo_teste * buscar_elemento(int v, nodo_teste **ant) 
-{
-  if(lista_vazia() == 1)
-  {
-    return NULL;
-  }
-  nodo_teste * p = head;
-  nodo_teste * aux_ant = NULL;
-  int achou = 0;
-  while(p != NULL)
-    {
-      if(p -> v)
-      {
-        achou = 1;
-        break;
-      }
-      aux_ant = p;
-      p = p -> prox;
-    }
-  if(achou == 1)
-  {
-    if(ant)
-    {
-      *ant = aux_ant;
-    }
-    return p;
-  }
-  return NULL;
-}
-
-int remover_elemento(int v)
-{
-  nodo_teste * ant = NULL;
-  nodo_teste * elem = buscar_elemento(v, &ant);
-  if(elem == NULL)
+  else
   {
     return 0;
   }
-  if(ant != NULL)
-  {
-    ant -> prox = elem -> prox;
-  }
-  if(elem == corrente)
-  {
-    corrente = ant;
-  }
-  if(elem == head)
-  {
-    head = elem -> prox;
-  }
-  free(elem);
-  elem = NULL;
-  return 1;
 }
 
-int tamanho_lista()
+int Lista_size(nodo *lista) /*Parece pronto*/
 {
-  if(lista_vazia())
-  {
-    return 0;
-  }
-  nodo_teste * aux = head;
+  if(Lista_isEmpty() == 1)
+    {
+      return 0;
+    }
+  nodo *aux = lista;
   int tam = 0;
 
-  while(aux != corrente)
+  while(aux != tail)
     {
       aux = aux -> prox;
       tam++;
@@ -134,10 +61,99 @@ int tamanho_lista()
   return tam;
 }
 
+int Lista_search(nodo* lista, void* chave, void* dest, int (*cmp)(void*,void*))
+{
+  nodo *aux = lista;
+  int cont = 0;
+  while(aux != chave)
+    {
+      aux = aux -> prox;
+      dest = aux;
+      cont++;
+    }
+  return cont/*?*/ ;
+}
+
+void Lista_pushFront(nodo* lista, void* valor)
+{
+
+}
+
+void Lista_pushBack(nodo* lista, void* valor)
+{
+  if(Lista_search() > (Lista_size() / 2))
+  {
+    nodo *aux = tail;
+    int cont = 0;
+    while(cont != (Lista_size() - Lista_search()) + 1 )
+      {
+        aux = aux -> ante;
+      }
+    aux -> prox = aux -> prox -> prox;
+    aux = aux -> prox;
+    tail -> prox = aux;
+  }
+  else
+  {
+    nodo *aux = head;
+    int cont = 0;
+    while(cont != Lista_search() - 1)
+      {
+        aux = aux -> prox;
+      }
+    aux -> prox = aux -> prox -> prox;
+    aux = aux -> prox;
+    tail -> prox = aux;
+  }
+}
+
+
+void Lista_first(nodo* lista) /*Parece pronto*/
+{
+  posicao = head;
+  printf("%p\n", (void*)head);
+}
+
+void Lista_last(nodo* lista) /*Parece pronto*/
+{
+  posicao = tail;
+  printf("%p\n", (void*)tail);
+}
+
+void Lista_current(nodo* lista, void* dest) /*Parece pronto*/
+{
+  printf("%p\n", posicao);
+}
+
+int Lista_next(nodo* lista) /*Parece pronto*/
+{
+  posicao = posicao -> prox;
+  printf("%p\n", posicao);
+}
+
+void Lista_remove(nodo* lista, void* chave, int (*cmp)(void*,void*))
+{
+  Lista_search();
+
+  free();
+}
+
+void Lista_insertAfter(nodo* lista, int data_size, void* dado)
+{
+  nodo *novo = (nodo*)malloc(sizeof(data_size));
+  novo -> dado = dado;
+  novo -> data_size = data_size;
+  novo -> prox = NULL;
+  novo -> ante = posicao;
+  if(posicao == tail)
+  {
+    tail = novo;
+  }
+}
+
 int main(void) {
   printf("Hello World\n");
 
-  nodo_teste * n = criar_lista(4);
-  
+  Lista_delete();
   return 0;
 }
