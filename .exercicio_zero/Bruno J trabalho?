@@ -16,7 +16,7 @@ nodo *posicao = NULL;
 
 //ALERTA, NÃO GENÉRICO//
 
-void Lista_new(nodo* lista, int data_size, void (*free_data)(void*)/*?*/)
+void Lista_new(nodo* lista, int data_size, void (*free_data)(void*)/*?*/) /*precisa ajustar para genérico*/
 {
   nodo *novol = (nodo*)malloc(sizeof(data_size));
   novol -> dado = dado;
@@ -28,7 +28,7 @@ void Lista_new(nodo* lista, int data_size, void (*free_data)(void*)/*?*/)
 
 void Lista_delete(nodo* lista)
 {
-  
+  /*?*/
   free(lista);
 }
 
@@ -74,37 +74,28 @@ int Lista_search(nodo* lista, void* chave, void* dest, int (*cmp)(void*,void*))
   return cont/*?*/ ;
 }
 
-void Lista_pushFront(nodo* lista, void* valor)
+void Lista_pushFront(nodo* lista, void* valor) /*precisa ajustar para genérico*/
 {
-
+  nodo *novo = (nodo*)malloc(sizeof(data_size));
+  novo -> dado = dado;
+  novo -> data_size = data_size;
+  novo -> prox = head;
+  novo -> ante = NULL;
+  
+  head -> ante = novo;
+  head = novo;
 }
 
-void Lista_pushBack(nodo* lista, void* valor)
+void Lista_pushBack(nodo* lista, void* valor) /*precisa ajustar para genérico*/
 {
-  if(Lista_search() > (Lista_size() / 2))
-  {
-    nodo *aux = tail;
-    int cont = 0;
-    while(cont != (Lista_size() - Lista_search()) + 1 )
-      {
-        aux = aux -> ante;
-      }
-    aux -> prox = aux -> prox -> prox;
-    aux = aux -> prox;
-    tail -> prox = aux;
-  }
-  else
-  {
-    nodo *aux = head;
-    int cont = 0;
-    while(cont != Lista_search() - 1)
-      {
-        aux = aux -> prox;
-      }
-    aux -> prox = aux -> prox -> prox;
-    aux = aux -> prox;
-    tail -> prox = aux;
-  }
+  nodo *novo = (nodo*)malloc(sizeof(data_size));
+  novo -> dado = dado;
+  novo -> data_size = data_size;
+  novo -> prox = NULL;
+  novo -> ante = tail;
+
+  tail -> prox = novo;
+  tail = novo;
 }
 
 
@@ -120,7 +111,7 @@ void Lista_last(nodo* lista) /*Parece pronto*/
   printf("%p\n", (void*)tail);
 }
 
-void Lista_current(nodo* lista, void* dest) /*Parece pronto*/
+void Lista_current(nodo* lista, void* dest) /*Parece pronto?*/
 {
   printf("%p\n", posicao);
 }
@@ -131,6 +122,12 @@ int Lista_next(nodo* lista) /*Parece pronto*/
   printf("%p\n", posicao);
 }
 
+int Lista_ante(nodo* lista) /*Parece pronto*/
+{
+  posicao = posicao -> ante;
+  printf("%p\n", posicao);
+}
+
 void Lista_remove(nodo* lista, void* chave, int (*cmp)(void*,void*))
 {
   Lista_search();
@@ -138,13 +135,18 @@ void Lista_remove(nodo* lista, void* chave, int (*cmp)(void*,void*))
   free();
 }
 
-void Lista_insertAfter(nodo* lista, int data_size, void* dado)
+void Lista_insertAfter(nodo* lista, int data_size, void* dado) /*precisa ajustar para genérico*/
 {
   nodo *novo = (nodo*)malloc(sizeof(data_size));
   novo -> dado = dado;
   novo -> data_size = data_size;
   novo -> prox = NULL;
   novo -> ante = posicao;
+  if(posicao -> prox != NULL)
+  {
+    novo -> prox = posicao -> prox;
+    posicao -> prox -> ante = novo;
+  }
   if(posicao == tail)
   {
     tail = novo;
@@ -153,6 +155,8 @@ void Lista_insertAfter(nodo* lista, int data_size, void* dado)
 
 int main(void) {
   printf("Hello World\n");
+
+  Lista_new();
 
   Lista_delete();
   return 0;
