@@ -7,6 +7,8 @@ int int_cmp(void *lhs, void *rhs);
 int double_cmp(void *lhs, void *rhs);
 int string_cmp(void *lhs, void *rhs);
 
+//teste caua
+
 int main(int argc, char **argv) {
   printf("Hello World!\n");
   return 0;
