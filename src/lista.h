@@ -6,20 +6,22 @@
  * abaixo. Você pode alterá-las com preferir.
  */
 
-// Define a struct para o no
-typedef struct _lista_nodo{
-    void* valor;                 // * para o dado armazenado na celula
-    struct _lista_nodo * next;         // * para a prox celula
-    struct _lista_nodo * prev;         // * para a celula anterior
-}Lista_Nodo;
-
-typedef struct lista{
+typedef struct lista {
     int data_size;
-	struct _lista_nodo* head;
-	struct _lista_nodo* tail;   
+    struct _lista_nodo* head;
+    struct _lista_nodo* tail;
+    struct _lista_nodo* nodoAtual;
     int size_list;
     void (*free_data)(void*);
+    //int (*cmp)(void*, void*);
 }Lista;
+
+// Define a struct para o no
+typedef struct _lista_nodo {
+    void* valor;                 // * para o dado armazenado na celula
+    struct _lista_nodo* next;         // * para a prox celula
+    struct _lista_nodo* prev;         // * para a celula anterior
+}Lista_Nodo;
 
 /**
  * Tarefas obrigatórias
