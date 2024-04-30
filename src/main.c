@@ -10,10 +10,14 @@
  */
 
 #include <stdio.h>
-
 #include "lista.h"
 
-int main(int argc, char** argv) {
-    printf("Hello World!\n");
-    return 0;
+
+void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
+    lista->head = NULL;
+    lista->current = NULL;
+    lista->data_size = data_size;
+    lista->free_data = free_data;
+    lista->tail = NULL; 
+    lista->next = NULL;
 }
