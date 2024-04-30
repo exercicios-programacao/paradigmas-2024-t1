@@ -9,11 +9,20 @@
  * avaliado pelos testes.
  */
 
+
 #include <stdio.h>
 
-#include "lista.h"
+int main() {
+  int num1, num2, soma;
 
-int main(int argc, char** argv) {
-    printf("Hello World!\n");
-    return 0;
-}
+  printf("Digite o primeiro numero: ");
+  scanf("%d", &numero1);
+  
+  printf("Digite o segundo numero: ");
+  scanf("%d", &numero2);
+
+  soma = num1 + num2;
+
+  printf("A soma de %d e %d is %d. \n", num1, num2, soma);
+
+  return 0;
