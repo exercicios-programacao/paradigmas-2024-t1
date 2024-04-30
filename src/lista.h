@@ -11,8 +11,12 @@ typedef struct _lista_nodo {
 } ListaNodo;
 
 typedef struct {
+  ListaNodo *head;
+  ListaNodo *tail;
+  ListaNodo *current;
+  int size;
+  void (*free)(void*);
 } Lista;
-
 
 /**
  * Tarefas obrigatórias
