@@ -13,7 +13,6 @@ typedef struct nodo {
 typedef struct {
      Nodo *primeiro;
      Nodo *ultimo;
-     Nodo *atual;
      int tamanho;
 } Lista;
 

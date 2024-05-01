@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "lista.h"
 
@@ -29,12 +30,27 @@ int Lista_size(Lista* lista){
 }
 
 void Lista_pushFront(Lista* lista, void* valor){
-    lista->primeiro->prox = lista->primeiro;
-    lista->primeiro->valor = valor;
+    Nodo *aux = (Nodo*) malloc(sizeof(Nodo));
+    aux->valor = valor;
+    aux->prox = lista->primeiro;
+    lista->primeiro = aux;
+
+    lista->tamanho++;
 }
 
 void Lista_pushBack(Lista* lista, void* valor){
-    lista->ultimo->valor = valor;
+    if(lista->ultimo == NULL){
+        lista->ultimo = lista->primeiro;
+    }
+
+    Nodo *novo = (Nodo*) malloc(sizeof(Nodo));
+    novo->valor = valor;
+    novo->prox = NULL;
+
+    lista->ultimo->prox = novo;
+    lista->ultimo = novo;
+
+    lista->tamanho++;
 }
 
 int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*)){
@@ -42,19 +58,15 @@ int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*))
 }
 
 void Lista_first(Lista* lista){
-    lista->atual = lista->primeiro;
+
 }
 
 void Lista_last(Lista* lista){
-    lista->atual = lista->ultimo;
+
 }
 
 int Lista_next(Lista* lista){
-    if(lista->atual == lista->ultimo){
-        return 0;
-    }
 
-    return lista->atual->prox->valor;
 }
 
 void Lista_current(Lista* lista, void* dest){
