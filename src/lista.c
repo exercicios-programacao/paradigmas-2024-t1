@@ -17,7 +17,6 @@ typedef struct {
     int data_size;
     void (*free_data)(void *data);
 } Lista;
-
 void Lista_new(Lista *lista, int data_size, void (*free_data)(void *)) {
     lista->head = NULL;
     lista->tail = NULL;
