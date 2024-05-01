@@ -1,157 +1,161 @@
-#ifndef _PARADIGMAS_T1_LISTA_H_
-#define _PARADIGMAS_T1_LISTA_H_
-
-/**
- * Você deve definir a estrutura da lista utilizando as duas estruturas
- * abaixo. Você pode alterá-las com preferir.
- */
-typedef struct _lista_nodo {
-    void* valor;
-    struct _lista_nodo* next;
-} ListaNodo;
-
-typedef struct {
-} Lista;
+#include <stdio.h>
+#include <stdlib.h>
+#include "lista.h"
+#include <string.h>
 
 
-/**
- * Tarefas obrigatórias
- *
- * Implementar uma lista com encadeamento simples que funciona como
- * um iterador sobre sim mesma.
- *
- * A implementação deveria seguir a ordem em que as funções estão
- * definidas neste arquivo, pois as mesmas funções são utilizadas
- * nos testes automatizados, e são testadas nesta ordem.
- *
- * Você NÃO pode alterar a arquivo a partir deste ponto!
- */
+void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
+    lista->head = NULL;
+    lista->current = NULL;
+    lista->data_size = data_size;
+    lista->free_data = free_data;
+    lista->tail = NULL; 
+    lista->next = NULL;
+}
 
-/**
- * Inicializa a estrutura da lista.
- * Por exemplo, para criar uma lista de inteiros (int), é preciso definir
- * o tamanho do tipo de dados, mas não é preciso definir uma função para
- * liberar memória, uma vez que os dados não são ponteiros:
- *
- *    Lista_new(&intlist, sizeof(int), NULL);
- * 
- * De forma semelhante, uma lista de `double` também não precisa de uma
- * função para liberar memória, mas precisa utilizar o tamanho correto
- * para os dados:
- *
- *    Lista_new(&doublelist, sizeof(double), NULL);
- *
- * Já uma lista de 'strings', ou seja, de `char*`, precisa de uma função
- * para liberar o espaço alocado para os dados:
- *
- *    Listal_new(&strlist, sizeof(char*), free);
- */
-void Lista_new(Lista* lista, int data_size, void (*free_data)(void*));
+void Lista_delete(Lista* lista) {
+    ListaNodo* head = lista->head;
+    while (head != NULL) {
+        ListaNodo* prox = head->next;
+        if (lista->free_data != NULL)
+            lista->free_data(head->valor);
+        free(head);
+        head = prox;
+    }
+    lista->head = NULL;
+    lista->tail = NULL;
+    lista->size = 0;
+}
 
-/**
- * Libera memória utilizada pela lista, e a reinicializa.
- */
-void Lista_delete(Lista* lista);
+int Lista_isEmpty(Lista* lista) {
+    return lista->size == 0;
+}
 
-/**
- * Retorna 0 (zero) casa o lista possua elementos, e 1 se estiver vazia.
- */
-int Lista_isEmpty(Lista* lista);
+int Lista_size(Lista* lista) {
+    return lista->size;
+}
 
-/**
- * Retorna o número de elementos armazenados na lista.
- */
-int Lista_size(Lista* lista);
 
-/**
- * Insere um novo valor no início da lista.
- */
-void Lista_pushFront(Lista* lista, void* valor);
+void Lista_pushFront(Lista* lista, void* valor) {
+    ListaNodo* novo_no = malloc(sizeof(ListaNodo));
+    if (novo_no == NULL) {
+    printf("Falha ao alocar memória"); 
+    return; 
+    }
+    novo_no->valor = valor;
+    novo_no->next = lista->head;
+    lista->head = novo_no;
+    lista->size++;
+}
 
-/**
- * Insere um novo valor no final da lista.
- */
-void Lista_pushBack(Lista* lista, void* valor);
+void Lista_pushBack(Lista* lista, void* valor) {
+    ListaNodo* novo_no = malloc(sizeof(ListaNodo));
+    novo_no->valor = valor;
+    novo_no->next = NULL;
+    if (lista->head == NULL) {
+        lista->head = novo_no;
+    } else {
+        ListaNodo* current = lista->head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = novo_no;
+    }
+    lista->size++;
+}
 
-/**
- * Procura na lista por um elemento associado com a chave.
- *
- * Por exemplo, para procura em uma lista de inteiros, é necessário
- * criar uma função de comparação de inteiros, como
- * 
- *     int int_cmp(const void *lhs, const void* rhs);
- *
- * que retorna um valor maior que 0 (zero), se 'lhs' representa um
- * valor maior que 'rhs', 0 (zero) se os valores forem iguais e um
- * valor menor que zero se 'lhs' representa um valor menor que 'rhs'.
- *
- * A função retorna 0 (falso) se não encontrou um valor, e um valor
- * diferente de zero (true) se o valor foi encontrado.
- */
-int Lista_search(
-    Lista* lista,
-    void* chave,
-    void* dest,
-    int (*cmp)(void*,void*)
-);
+int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*)) {
+    ListaNodo* current = lista->head;
+    while (current != NULL) {
+        if (cmp(current->valor, chave) == 0) {
+            if (dest != NULL) {
+                memcpy(dest, current->valor, lista->data_size);
+            }
+            return 1; 
+        }
+        current = current->next;
+    }
+    return 0; 
+}
 
-/**
- * Procura na lista pelo primeiro elemento com o valor da 'chave' dada e
- * o remove da lista.
- */
-void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)
-);
+void Lista_first(Lista* lista) {
+   lista->current = lista->head;
+}
 
-/**
- * Ajusta o 'elemento atual' da lista para o primeiro elemento.
- */
-void Lista_first(Lista* lista);
+typedef struct Node* ListaPtr;
 
-/**
- * Ajusta o 'elemento atual' da lista para o último elemento.
- */
-void Lista_last(Lista* lista);
+struct Node {
+    int data;
+    struct Node* next;
+};
 
-/**
- * Ajusta o 'elemento atual' da lista para próximo elemento.
- * 
- * A função retorna 0 (falso) se não existe um próximo elemento,
- * e um valor diferente de zero (true) se existe.
- */
-int Lista_next(Lista* lista);
+void Lista_last(Lista* lista) {
+    if (lista->head == NULL) {
+        printf("A lista está vazia.\n");
+        return;
+    }
+    struct Node* current = lista->head; 
+    while (current->next != NULL) {
+        current = current->next;
+    }
 
-/**
- * Retorna o valor do 'elemento atual' em 'dest'.
- */
-void Lista_current(Lista* lista, void* dest);
 
-/**
- * Insere um novo elemento na lista após o 'elemento atual'.
- */
-void Lista_insertAfter(Lista* lista, void* dado);
+    
+}
+int Lista_next(Lista* lista) {
+    struct Node* current = lista->head;
+    int count = 0; 
+    while (current != NULL) {
+        count++; 
+        current = current->next;
+    }
+    return 0;
+}
 
-/**********
- * Tarefas opcionais.
- *
- * Implementar uma lista duplamente encadeada.
- */
 
-/**
- * Remove o 'elemento atual' da lista.
- */
-void Lista_removeCurrent(Lista* lista);
+void Lista_current(Lista* lista, void* dest) {
+    if (lista->current != NULL) {
+    memcpy(dest, lista->current->valor, lista->data_size);
+    }
+}
 
-/**
- * Ajusta o 'elemento atual' da lista para elemento anterior.
- * 
- * A função retorna 0 (falso) se não existe um elemento anterior,
- *  e um valor diferente de zero (true) se existe.
- */
-int Lista_previous(Lista* lista);
 
-/**
- * Insere um novo elemento no lista antes do 'elemento atual'.
- */
-void Lista_insertBefore(Lista* lista, void* dado);
+void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)) {
+    if (lista->current == NULL) {
+        printf("Não há elemento atual.\n");
+        return;
+    }
 
-#endif /* _PARADIGMAS_T1_LISTA_H_ */
+    if (cmp(lista->current->valor, chave) == 0) {
+        ListaNodo* no_a_ser_removido = lista->current;
+        lista->current = lista->current->next;
+
+        if (lista->free_data != NULL)
+            lista->free_data(no_a_ser_removido->valor);
+
+        free(no_a_ser_removido);
+        lista->size--;
+    } else {
+        printf("A chave não corresponde ao elemento atual.\n");
+    }
+}
+
+
+void Lista_insertAfter(Lista* lista, void* dado) {
+    if (lista->current == NULL) {
+        printf("Não há elemento atual.\n");
+        return;
+    }
+
+    ListaNodo* novo_no = malloc(sizeof(ListaNodo));
+    if (novo_no == NULL) {
+        printf("Falha ao alocar memória.\n");
+        return;
+    }
+
+    novo_no->valor = dado;
+    novo_no->next = lista->current->next;
+    lista->current->next = novo_no;
+    lista->size++;
+}
+
