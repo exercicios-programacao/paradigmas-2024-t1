@@ -15,17 +15,5 @@
 
 int main(int argc, char **argv)
 {
-
-    Lista intlist;
-    Lista_new(&intlist, sizeof(int), NULL);
-
-    // REQUIRE(true == bool(Lista_isEmpty(&intlist)));
-    int isEmpty = Lista_isEmpty(&intlist);
-    printf("%i\n", isEmpty);
-
-    // REQUIRE(0 == Lista_size(&intlist));
-    int size = Lista_size(&intlist);
-    printf("%i\n", size);
-
-    Lista_delete(&intlist);
+    return 0;
 }

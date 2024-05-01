@@ -31,7 +31,7 @@ void Lista_new(Lista *lista, int data_size, void (*free_data)(void *))
     newList->free_data = free_data;
   }
 
-  *lista = *newList;
+  memcpy(lista, newList, sizeof(Lista));
 }
 
 void Lista_delete(Lista *lista)
@@ -47,6 +47,11 @@ void Lista_delete(Lista *lista)
 
     nodo = nextNodo;
   };
+
+  lista->head = NULL;
+  lista->tail = NULL;
+  lista->elementoAtual = NULL;
+  lista->size = 0;
 }
 
 int Lista_isEmpty(Lista *lista) { return (*lista).size == 0; }
@@ -143,19 +148,18 @@ void Lista_last(Lista *lista)
 
 int Lista_next(Lista *lista)
 {
-  (*lista).elementoAtual = (*lista).elementoAtual->next;
-
-  if ((*lista).elementoAtual == NULL)
+  if ((*lista).elementoAtual->next == NULL)
   {
     return 0;
   }
 
+  (*lista).elementoAtual = (*lista).elementoAtual->next;
   return 1;
 }
 
 void Lista_current(Lista *lista, void *dest)
 {
-  dest = (*lista).elementoAtual;
+  memcpy(dest, (*lista).elementoAtual->valor, (*lista).data_size);
 }
 
 void Lista_insertAfter(Lista *lista, void *dado)
