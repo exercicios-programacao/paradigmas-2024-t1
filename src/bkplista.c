@@ -261,12 +261,12 @@ void Lista_insertAfter(Lista* lista, void* dado) {
     novo_nodo->prev=NULL;
     if(lista->nodoAtual != NULL){
         novo_nodo->next = (*lista->nodoAtual)->next;
-        *(lista->nodoAtual)->next = novo_nodo;
-        novo_nodo->prev = lista->nodoAtual;
+        novo_nodo->prev = *lista->nodoAtual;
+        memcpy((*lista->nodoAtual)->next, novo_nodo, sizeof(novo_nodo));
     }else if(lista->head==NULL){
-         lista->head = novo_nodo;
+        lista->head = novo_nodo;
         //Se a cabeça é vazia a cauda tbm é a cabeca
-        lista->tail = novo_nodo
+        lista->tail = novo_nodo;
     }else if (novo_nodo->next == NULL) {
             lista->tail = novo_nodo;
     }
@@ -276,7 +276,7 @@ void Lista_insertAfter(Lista* lista, void* dado) {
 
 void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCurrent p remover o 'elemento atual' da lista
     if (lista->nodoAtual != NULL) {
-        Lista_Nodo* nodo = lista->nodoAtual; // Armazena o 'elemento atual' em um ponteiro p ser removido
+        Lista_Nodo* nodo = *lista->nodoAtual; // Armazena o 'elemento atual' em um ponteiro p ser removido
         if (nodo->prev != NULL) {    // Se o 'elemento atual' tiver um nó anterior, o próximo nó após o 'elemento atual' agora aponta p o nó anterior
             nodo->prev->next = nodo->next;
         }
