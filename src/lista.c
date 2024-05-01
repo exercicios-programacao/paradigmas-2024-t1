@@ -1,10 +1,8 @@
 // Feito por: Eduardo Almeida, Gabriel Durzinsky e Pedro Arthur
 // As tarefas extras não foram concluídas 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 typedef struct _lista_nodo {
     void *valor;
     struct _lista_nodo *next;
