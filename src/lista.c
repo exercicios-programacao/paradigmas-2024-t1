@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+void default_free(void *data)
+{
+  free(data);
+}
+
 void Lista_new(Lista *lista, int data_size, void (*free_data)(void *))
 {
   Lista *newList = (Lista *)malloc(sizeof(Lista));
@@ -16,11 +21,6 @@ void Lista_new(Lista *lista, int data_size, void (*free_data)(void *))
   newList->tail = NULL;
   newList->size = 0;
   newList->data_size = data_size;
-
-  void default_free(void *data)
-  {
-    free(data);
-  }
 
   if (free_data == NULL)
   {
