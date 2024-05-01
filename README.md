@@ -67,7 +67,7 @@ Você deve garantir que os testes executaram corretamente, pois é a partir
 deles que será realizada a avaliação.
 
 
-Discussões Online
+Discussões Online!
 -----------------
 
 Dúvidas e disccussões sobre o trabalho podem ser realizadas utilizando as
