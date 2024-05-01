@@ -9,7 +9,7 @@
 
 void Lista_new(Lista *lista, int data_size, void (*free_data)(void *))
 {
-  Lista *newList = malloc(sizeof(Lista));
+  Lista *newList = (Lista *)malloc(sizeof(Lista));
 
   newList->elementoAtual = NULL;
   newList->head = NULL;
@@ -29,7 +29,7 @@ int Lista_size(Lista *lista) { return lista->size; }
 
 void Lista_pushFront(Lista *lista, void *valor)
 {
-  ListaNodo *nodo = malloc(sizeof(ListaNodo));
+  ListaNodo *nodo = (ListaNodo *)malloc(sizeof(ListaNodo));
 
   nodo->valor = malloc((*lista).data_size);
   memcpy(nodo->valor, valor, (*lista).data_size);
@@ -45,7 +45,7 @@ void Lista_pushFront(Lista *lista, void *valor)
 
 void Lista_pushBack(Lista *lista, void *valor)
 {
-  ListaNodo *nodo = malloc(sizeof(ListaNodo));
+  ListaNodo *nodo = (ListaNodo *)malloc(sizeof(ListaNodo));
   nodo->next = NULL;
   nodo->valor = malloc((*lista).data_size);
   memcpy(nodo->valor, valor, (*lista).data_size);
@@ -129,12 +129,12 @@ int Lista_next(Lista *lista)
 
 void Lista_current(Lista *lista, void *dest)
 {
-  *dest = *((*lista).elementoAtual);
+  dest = (*lista).elementoAtual;
 }
 
 void Lista_insertAfter(Lista *lista, void *dado)
 {
-  ListaNodo *nodo = malloc(sizeof(ListaNodo));
+  ListaNodo *nodo = (ListaNodo *)malloc(sizeof(ListaNodo));
 
   nodo->valor = malloc((*lista).data_size);
   memcpy(nodo->valor, dado, (*lista).data_size);
