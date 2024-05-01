@@ -10,7 +10,7 @@ typedef struct lista {
     int data_size;
     struct _lista_nodo* head;
     struct _lista_nodo* tail;
-    struct _lista_nodo* nodoAtual;
+    struct _lista_nodo** nodoAtual;
     int size_list;
     void (*free_data)(void*);
     //int (*cmp)(void*, void*);

@@ -12,7 +12,7 @@
     int data_size;
     struct _lista_nodo* head;
     struct _lista_nodo* tail;
-    struct _lista_nodo* nodoAtual;
+    struct _lista_nodo** nodoAtual;
     int size_list;
     void (*free_data)(void*);
     //int (*cmp)(void*, void*);
@@ -25,6 +25,7 @@ typedef struct _lista_nodo {
     struct _lista_nodo* prev;         // * para a celula anterior
 }Lista_Nodo;
 */
+
 void free_data(void* nodo) {
     if (nodo != NULL)
     {
@@ -38,7 +39,7 @@ int int_cmp(void* lhs, void* rhs)
 }
 double double_cmp(void* lhs, void* rhs)
 {
-    return *(double_cmp*)lhs - *(double_cmp*)rhs;
+    return *(double*)lhs - *(double*)rhs;
 }
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
@@ -168,12 +169,11 @@ int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*, void*)
     Lista_Nodo* nodo = lista->head; // Inicializa ponteiro p percorrer a lista
     while (nodo != NULL) { // Percorre a lista
         if (cmp(nodo->valor, chave) == 0) {  // Compara o valor do nó com a chave
-
             if (dest != NULL) // Se a chave for encontrada, copia o valor do nó para o destino
                 *((void**)dest) = nodo->valor;
             return 1; // Elemento encontrado
         }
-        nodo = nodo->;
+        nodo = nodo->next;
     }
     return 0; // Elemento não encontrado
 }
@@ -229,8 +229,8 @@ int Lista_next(Lista* lista) { // Implementação da função next p avançar pa
     if (lista->nodoAtual == NULL){
         Lista_first(lista);
     }
-    if(lista->nodoAtual != NULL && lista->nodoAtual->next != NULL ){
-        lista->nodoAtual = &lista->nodoAtual->next;
+    if(*lista->nodoAtual != NULL && (*lista->nodoAtual)->next != NULL ){
+        lista->nodoAtual = &((*lista->nodoAtual)->next);
     }
     if(lista->nodoAtual!=NULL){
         return 1; // Existe um próximo elemento
@@ -242,7 +242,7 @@ int Lista_next(Lista* lista) { // Implementação da função next p avançar pa
 
 void Lista_current(Lista* lista, void* dest) { // Implementação da func current para ter o valor do 'elemento atual'
     if (lista->nodoAtual != NULL){
-         memcpy(dest, lista->nodoAtual->valor, lista->data_size);
+         memcpy(dest, (*lista->nodoAtual)->valor, lista->data_size);
     }
     else
     {
@@ -251,45 +251,34 @@ void Lista_current(Lista* lista, void* dest) { // Implementação da func curren
 }
 
 void Lista_insertAfter(Lista* lista, void* dado) {
-Lista_Nodo* nodo_pecorre_lista  = malloc(sizeof(Lista_Nodo));
-    if(lista->nodoAtual != NULL && lista->head != NULL){
-        nodo_pecorre_lista->head = &lista->head;
-        while (nodo_pecorre_lista != NULL) { // Percorre a lista
-            //while(lista->head!=NULL){
-                //lista->head =lista->head->next=
-                if (cmp(lista->nodoAtual->valor, nodo_pecorre_lista->valor) == 0) {  // Compara o valor do nó com a chave
-                    //
-                     Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
-                     novo_nodo->valor = malloc(lista->data_size);
-                     memcpy(novo_nodo->valor, dado, lista->data_size);
-                     novo_nodo->next = &nodo_pecorre_lista->next;
-                     novo_nodo->prev = &nodo_pecorre_lista->prev;
-                    
-                    Lista_Nodo* enderecoNaListaNovoDado = &lista->nodoAtual->next;
-                    enderecoNaListaNovoDado = novo_nodo;
-                    //Se o proximo elemento for a cauda substituir a cauda pelo novo
-                     if (novo_nodo->next == NULL) {
-                        lista->tail = nodo_pecorre_lista;
-                    }
-                        lista->size_list += 1;
-                        lista->free_data(novo_nodo);
-                    //
-                break;
-                }else{
-                    nodo_pecorre_lista = nodo_pecorre_lista->next;
-                }
-           // }
-        }
+    //nodoatual
+    //nodoatual->next = dado
+    //nodoatual->next ->prev = nodoatual->next;
+    //dado->next = nodoatual->next;
+    Lista_Nodo* novo_nodo  = malloc(sizeof(Lista_Nodo));
+    novo_nodo->valor = malloc(lista->data_size);
+    memcpy(novo_nodo->valor, dado, lista->data_size);
+    novo_nodo->next=NULL;
+    novo_nodo->prev=NULL;
+    if(lista->nodoAtual != NULL){
+        novo_nodo->next = (*lista->nodoAtual)->next;
+        novo_nodo->prev = *lista->nodoAtual;
+        memcpy((*lista->nodoAtual)->next, novo_nodo, sizeof(novo_nodo));
     }else if(lista->head==NULL){
-         lista->head = nodo;
+        lista->head = novo_nodo;
         //Se a cabeça é vazia a cauda tbm é a cabeca
-        lista->tail = nodo
+        lista->tail = novo_nodo;
+    }else if (novo_nodo->next == NULL) {
+            lista->tail = novo_nodo;
     }
+    lista->size_list += 1;
+    lista->free_data(novo_nodo);
+    free(dado);
 }
 
 void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCurrent p remover o 'elemento atual' da lista
     if (lista->nodoAtual != NULL) {
-        Lista_Nodo* nodo = lista->nodoAtual; // Armazena o 'elemento atual' em um ponteiro p ser removido
+        Lista_Nodo* nodo = *lista->nodoAtual; // Armazena o 'elemento atual' em um ponteiro p ser removido
         if (nodo->prev != NULL) {    // Se o 'elemento atual' tiver um nó anterior, o próximo nó após o 'elemento atual' agora aponta p o nó anterior
             nodo->prev->next = nodo->next;
         }
@@ -332,8 +321,8 @@ int Lista_previous(Lista* lista){
     if (lista->nodoAtual == NULL){
         Lista_last(lista);
     }
-    if(lista->nodoAtual != NULL && lista->nodoAtual->prev != NULL ){
-        lista->nodoAtual = &lista->nodoAtual->prev;
+    if(lista->nodoAtual != NULL && (*lista->nodoAtual)->prev != NULL ){
+        lista->nodoAtual = &((*lista->nodoAtual)->prev);
     }
     if(lista->nodoAtual!=NULL){
         return 1; // Existe um próximo elemento
@@ -346,41 +335,30 @@ int Lista_previous(Lista* lista){
 /**
  * Insere um novo elemento no lista antes do 'elemento atual'.
  */
-void Lista_insertBefore(Lista* lista, void* dado) {
-Lista_Nodo* nodo_pecorre_lista  = malloc(sizeof(Lista_Nodo));
-    if(lista->nodoAtual != NULL && lista->head != NULL){
-        nodo_pecorre_lista->head = &lista->head;
-        while (nodo_pecorre_lista != NULL) { // Percorre a lista
-            //while(lista->head!=NULL){
-                //lista->head = lista->head->next=
-                if (cmp(lista->nodoAtual->valor, nodo_pecorre_lista->valor) == 0) {  // Compara o valor do nó com a chave
-                    //
-                     Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
-                     novo_nodo->valor = malloc(lista->data_size);
-                     memcpy(novo_nodo->valor, dado, lista->data_size);
-                     novo_nodo->next = &nodo_pecorre_lista->next;
-                     novo_nodo->prev = &nodo_pecorre_lista->prev;
-                    
-                    Lista_Nodo* enderecoNaListaNovoDado = &lista->nodoAtual->prev;
-                    enderecoNaListaNovoDado = novo_nodo;
-                    //Se o nodo atual for a cabeca substituir a cabeça plo atual
-                     if (cmp(lista->nodoAtual->valor, lista->head->valor) == 0) {  // Compara o valor do nó com a chave
-                        lista->head = nodo_pecorre_lista;
-                    }
-                        lista->size_list += 1;
-                        lista->free_data(novo_nodo);
-                    //
-                break;
-                }else{
-                    nodo_pecorre_lista = nodo_pecorre_lista->next;
-                }
-           // }
-        }
+ 
+ void Lista_insertBefore(Lista* lista, void* dado) {
+    //nodoatual
+    //nodoatual->next = dado
+    //nodoatual->next ->prev = nodoatual->next;
+    //dado->next = nodoatual->next;
+    Lista_Nodo* novo_nodo  = malloc(sizeof(Lista_Nodo));
+    novo_nodo->valor = malloc(lista->data_size);
+    memcpy(novo_nodo->valor, dado, lista->data_size);
+    novo_nodo->next=*lista->nodoAtual;
+    novo_nodo->prev=NULL;
+    if(lista->nodoAtual != NULL){
+        novo_nodo->prev = (*lista->nodoAtual)->prev;
+        memcpy((*lista->nodoAtual)->prev, novo_nodo, sizeof(novo_nodo));
     }else if(lista->head==NULL){
-         lista->head = nodo;
+        lista->head = novo_nodo;
         //Se a cabeça é vazia a cauda tbm é a cabeca
-        lista->tail = nodo
+        lista->tail = novo_nodo;
+    }else if (novo_nodo->prev == NULL) {
+            lista->head = novo_nodo;
     }
+    lista->size_list += 1;
+    lista->free_data(novo_nodo);
+    free(dado);
 }
 
 /*int main() {
