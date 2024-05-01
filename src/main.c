@@ -15,17 +15,17 @@
 
 int main(int argc, char **argv)
 {
-    Lista intlist;
 
+    Lista intlist;
     Lista_new(&intlist, sizeof(int), NULL);
 
-    for (int i = 0; i < 10; i++)
-    {
-        Lista_pushBack(&intlist, &i);
-    }
+    // REQUIRE(true == bool(Lista_isEmpty(&intlist)));
+    int isEmpty = Lista_isEmpty(&intlist);
+    printf("%i\n", isEmpty);
 
+    // REQUIRE(0 == Lista_size(&intlist));
     int size = Lista_size(&intlist);
     printf("%i\n", size);
 
-    return 0;
+    Lista_delete(&intlist);
 }

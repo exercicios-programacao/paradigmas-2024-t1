@@ -16,12 +16,38 @@ void Lista_new(Lista *lista, int data_size, void (*free_data)(void *))
   newList->tail = NULL;
   newList->size = 0;
   newList->data_size = data_size;
-  newList->free_data = free_data;
+
+  void default_free(void *data)
+  {
+    free(data);
+  }
+
+  if (free_data == NULL)
+  {
+    newList->free_data = default_free;
+  }
+  else
+  {
+    newList->free_data = free_data;
+  }
 
   *lista = *newList;
 }
 
-void Lista_delete(Lista *lista) { (*lista).free_data(lista); }
+void Lista_delete(Lista *lista)
+{
+  ListaNodo *nodo = (*lista).head;
+
+  while (nodo != NULL)
+  {
+    ListaNodo *nextNodo = nodo->next;
+
+    lista->free_data(nodo->valor);
+    lista->free_data(nodo);
+
+    nodo = nextNodo;
+  };
+}
 
 int Lista_isEmpty(Lista *lista) { return (*lista).size == 0; }
 
