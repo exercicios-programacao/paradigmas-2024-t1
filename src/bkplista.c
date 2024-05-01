@@ -260,11 +260,9 @@ void Lista_insertAfter(Lista* lista, void* dado) {
     novo_nodo->next=NULL;
     novo_nodo->prev=NULL;
     if(lista->nodoAtual != NULL){
-        if(*(lista->nodoAtual)->next != NULL){
-            novo_nodo->next = &((lista->nodoAtual)->next);
-            novo_nodo->prev = &lista->nodoAtual;
-            &((lista->nodoAtual)->next) = novo_nodo;
-        }
+        novo_nodo->next = (*lista->nodoAtual)->next;
+        *(lista->nodoAtual)->next = novo_nodo;
+        novo_nodo->prev = lista->nodoAtual;
     }else if(lista->head==NULL){
          lista->head = novo_nodo;
         //Se a cabeça é vazia a cauda tbm é a cabeca
@@ -274,19 +272,6 @@ void Lista_insertAfter(Lista* lista, void* dado) {
     }
     lista->size_list += 1;
     lista->free_data(novo_nodo);
-    if(lista->nodoAtual != NULL && lista->head != NULL){
-        Lista_Nodo* novo_nodo = malloc(sizeof(Lista_Nodo));
-        novo_nodo->valor = malloc(lista->data_size);
-        memcpy(novo_nodo->valor, dado, lista->data_size);
-        novo_nodo->next = &nodo_pecorre_lista->next;
-        novo_nodo->prev = &nodo_pecorre_lista->prev;
-        Lista_Nodo* enderecoNaListaNovoDado = &((lista->nodoAtual)->next);
-        enderecoNaListaNovoDado = novo_nodo;
-        //Se o proximo elemento for a cauda substituir a cauda pelo novo
-        
-         
-
-    
 }
 
 void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCurrent p remover o 'elemento atual' da lista
