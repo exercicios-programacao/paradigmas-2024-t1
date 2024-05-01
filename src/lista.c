@@ -106,3 +106,9 @@ void Lista_insertAfter(Lista* lista, void* dado) {
 	(*nodo).next = (*lista).elementoAtual->next;
 	(*lista).elementoAtual->next = nodo;
 }
+
+void Lista_removeCurrent(Lista* lista) { return; }
+
+int Lista_previous(Lista* lista) { return 0; }
+
+void Lista_insertBefore(Lista* lista, void* dado) { return; }
