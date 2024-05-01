@@ -1,6 +1,5 @@
 #include "lista.h"
 
-
 void Lista_imprime(Lista* lista)
 {
     ListaNodo *ptLista = lista->head;
@@ -16,7 +15,7 @@ void Lista_imprime(Lista* lista)
     {
         while(ptLista != NULL)
         {
-            printf("\n%do- %c",index,ptLista->valor);
+            printf("\n%do- %d",index,ptLista->valor);
             index++;
             ptLista = ptLista->next;
         }
@@ -34,13 +33,13 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*))
     lista->size_of = data_size;
     lista->free_data = free_data;
 
-    printf("\nO head eh: %s",lista->head);
-    printf("\nO current eh: %s",lista->current);
-    printf("\nO tail eh: %s",lista->tail);
-    printf("\nO size eh: %s",lista->size);
-    printf("\nO size_of eh: %s",lista->size_of);
-    //printf("\nO free_data eh: %s",lista->free_data);
-    //printf("\n...lista criada!\n");
+    printf("\nO head eh: %d",lista->head);
+    printf("\nO current eh: %d",lista->current);
+    printf("\nO tail eh: %d",lista->tail);
+    printf("\nO size eh: %d",lista->size);
+    printf("\nO size_of eh: %d",lista->size_of);
+    printf("\nO free_data eh: %d",lista->free_data);
+    printf("\n...lista criada!\n");
 }
 
 void Lista_delete(Lista* lista)
@@ -55,14 +54,14 @@ void Lista_delete(Lista* lista)
         ptLista = lista->free_data;
         ptLista = ptAux;
     }
-    lista = lista->free_data;
+    free(lista);
 
     printf("\n...lista removida!\n");
 }
 
 int Lista_isEmpty(Lista* lista)
 {
-    if(lista->head == lista->free_data)
+    if(lista->head == NULL)
     {
         return 1;
     }
@@ -79,7 +78,7 @@ int Lista_size(Lista* lista)
 
 void Lista_pushFront(Lista* lista, void* valor)
 {
-    printf("\nInserindo o valor %s na frente da lista...",valor);
+    printf("\nInserindo o valor %d na frente da lista...",valor);
     ListaNodo *novo;
 
     novo = (ListaNodo*) malloc(lista->size_of);
@@ -97,7 +96,7 @@ void Lista_pushFront(Lista* lista, void* valor)
 
 void Lista_pushBack(Lista* lista, void* valor)
 {
-    printf("\nInserindo o valor %s no final da lista...",valor);
+    printf("\nInserindo o valor %d no final da lista...",valor);
 
     ListaNodo *novo, *ptAux = lista->head;
     novo = (ListaNodo*) malloc(lista->size_of);
@@ -139,7 +138,7 @@ int Lista_search(
         if(cmp(ptLista->valor,chave) == 1)
         {
             printf("\nValor: %d", ptLista->valor);
-            memcpy(dest, &ptLista->valor, lista->size_of);
+            dest = ptLista->valor;
             return 1;
         }
         ptLista = ptLista->next;
