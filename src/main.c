@@ -13,7 +13,19 @@
 
 #include "lista.h"
 
-int main(int argc, char** argv) {
-    printf("Hello World!\n");
+int main(int argc, char **argv)
+{
+    Lista intlist;
+
+    Lista_new(&intlist, sizeof(int), NULL);
+
+    for (int i = 0; i < 10; i++)
+    {
+        Lista_pushBack(&intlist, &i);
+    }
+
+    int size = Lista_size(&intlist);
+    printf("%i\n", size);
+
     return 0;
 }
