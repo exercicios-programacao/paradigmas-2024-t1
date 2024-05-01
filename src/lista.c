@@ -1,8 +1,8 @@
 //Feito por: Eduardo Almeida, Gabriel Durzinsky e Pedro Arthur
+//As tarefas extras não foram concluídas infelizmente
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 typedef struct Node {
     void *data;
     struct Node *next;
