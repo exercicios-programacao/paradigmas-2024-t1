@@ -10,8 +10,10 @@
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)){
     lista->primeiro = NULL;
+    lista->atual = lista->primeiro;
     lista->ultimo = lista->primeiro;
     lista->tamanho = 0;
+    lista->data = malloc(data_size);
 }
 
 void Lista_delete(Lista* lista){
@@ -58,19 +60,23 @@ int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*))
 }
 
 void Lista_first(Lista* lista){
-
+    lista->atual = lista->primeiro;
 }
 
 void Lista_last(Lista* lista){
-
+    lista->atual = lista->ultimo;
 }
 
 int Lista_next(Lista* lista){
-
+    if(lista->atual->prox != null) {
+        lista->atual = lista->atual->prox;
+        return 1;
+    }
+    return 0;
 }
 
 void Lista_current(Lista* lista, void* dest){
-
+    dest = lista->atual->valor;
 }
 
 void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)){

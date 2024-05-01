@@ -42,4 +42,14 @@ int main(void) {
 
     Lista_pushBack(&lista, 5);
     imprimir(&lista);
+
+    Lista_pushFront(&lista, 1);
+    imprimir(&lista);
+
+    Lista_pushBack(&lista, 6);
+    imprimir(&lista);
+
+    printf("\nTamanho da lista: %d", Lista_size(&lista));
+
+    printf("\n");
 }
