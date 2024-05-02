@@ -29,3 +29,7 @@ result.raw
 
 # editor files
 *.swp
+
+.vscode
+
+src/main.DSYM*

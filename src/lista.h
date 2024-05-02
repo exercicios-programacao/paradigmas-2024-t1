@@ -5,14 +5,8 @@
  * Você deve definir a estrutura da lista utilizando as duas estruturas
  * abaixo. Você pode alterá-las com preferir.
  */
-typedef struct _lista_nodo {
-    void* valor;
-    struct _lista_nodo* next;
-} ListaNodo;
 
-typedef struct {
-} Lista;
-
+#include lista.c
 
 /**
  * Tarefas obrigatórias
@@ -46,7 +40,7 @@ typedef struct {
  *
  *    Listal_new(&strlist, sizeof(char*), free);
  */
-void Lista_new(Lista* lista, int data_size, void (*free_data)(void*));
+//void Lista_new(Lista* lista, int data_size, void (*free_data)(void*));
 
 /**
  * Libera memória utilizada pela lista, e a reinicializa.
