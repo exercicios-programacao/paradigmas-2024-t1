@@ -108,7 +108,7 @@ SCENARIO("Adiciona elementos ao final de uma lista de double", "[PushBackDouble]
     }
 }
 
-SCENARIO("Adiciona elementos no final de uma lista de double", "[PushFrontDouble]") {
+SCENARIO("Adiciona elementos ao final de uma lista de double", "[PushFrontDouble]") {
     GIVEN("Uma lista inicializada.") {
         Lista doublelist;
         Lista_new(&doublelist, sizeof(double), NULL);
