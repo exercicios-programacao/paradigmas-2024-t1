@@ -1,7 +1,7 @@
 #!/bin/sh
 
 USE_FIFO=0
-[ "$1" = "-v" ] && USE_FIFO=1 && shift
+[ "$1" == "-v" ] && USE_FIFO=1 && shift
 
 do_test() {
     if [ ${USE_FIFO} -gt 0 ]
