@@ -6,7 +6,7 @@ USE_FIFO=0
 do_test() {
     if [ ${USE_FIFO} -gt 0 ]
     then
-        valgrind --track-origins=yes --leak-check=full --error-exitcode=1 -s "${1}" --success >result.raw 2>&1 | tee result.raw
+        valgrind --track-origins=yes --leak-check=full --error-exitcode=1 -s "${1}" --success > >(tee result.raw) 2>&1
     else
         valgrind --track-origins=yes --leak-check=full --error-exitcode=1 -s "${1}" --success >result.raw 2>&1
     fi
