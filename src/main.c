@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "lista.h"
 
 void imprimir(Lista *lista){
@@ -20,6 +21,10 @@ void imprimir(Lista *lista){
         aux = aux->prox;
     }
     printf("]");
+}
+
+int int_cmp(void *a, void *b) {
+    return *(int*)a - *(int*)b;
 }
 
 int main(void) {
@@ -50,6 +55,14 @@ int main(void) {
     imprimir(&lista);
 
     printf("\nTamanho da lista: %d", Lista_size(&lista));
+
+    Lista_first(&lista);
+    int* dest;
+    Lista_current(&lista, &dest);
+
+    printf("\nElemento atual: %d", lista.atual->valor);
+
+    Lista_removeCurrent(&lista);
 
     printf("\n");
 }

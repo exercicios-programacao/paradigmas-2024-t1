@@ -3,8 +3,8 @@
  */
 
 #include <stdlib.h>
-#include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "lista.h"
 
@@ -55,8 +55,21 @@ void Lista_pushBack(Lista* lista, void* valor){
     lista->tamanho++;
 }
 
-int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*,void*)){
+int Lista_search(Lista* lista, void* chave, void* dest, int (*cmp)(void*, void*)){
+    Nodo *aux;
+    aux = lista->primeiro;
 
+    while(aux != NULL){
+        dest = aux->valor;
+
+        if(cmp(chave, dest) == 0){
+            return 1;
+        }
+
+        aux = aux->prox;
+    }
+
+    return 0;
 }
 
 void Lista_first(Lista* lista){
@@ -68,7 +81,7 @@ void Lista_last(Lista* lista){
 }
 
 int Lista_next(Lista* lista){
-    if(lista->atual->prox != null) {
+    if(lista->atual->prox != NULL) {
         lista->atual = lista->atual->prox;
         return 1;
     }
@@ -76,16 +89,27 @@ int Lista_next(Lista* lista){
 }
 
 void Lista_current(Lista* lista, void* dest){
+    if(lista->atual == NULL){
+        lista->atual = lista->primeiro;
+    }
+
     dest = lista->atual->valor;
 }
 
-void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*)){
-
+void Lista_removeCurrent(Lista* lista){
+    lista->atual->prox = lista->atual;
+    free(lista->atual);
 }
 
 void Lista_insertAfter(Lista* lista, void* dado){
+    Nodo *novo = (Nodo*) malloc(sizeof(Nodo));
+    novo->valor = dado;
+    novo->prox = lista->atual->prox;
 
+    lista->atual->prox = novo;
 }
+
+
 
 
 
