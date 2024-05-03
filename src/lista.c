@@ -197,5 +197,3 @@ int cmp_int(void *a, void *b) {
 int main() {
     return 0;
 }
-
-#include "lista.h"
