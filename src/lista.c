@@ -59,7 +59,7 @@ void Lista_delete(Lista* lista) {
          if(lista->free_data != NULL){
             lista->free_data(lista->nodoAtual);
         }else{
-            free(lista->nodoAtual)
+            free(lista->nodoAtual);
         }
           //free(lista->nodoAtual)
      }
@@ -67,7 +67,7 @@ void Lista_delete(Lista* lista) {
         if(lista->free_data != NULL){
             lista->free_data(lista);
         }else{
-            free(lista)
+            free(lista);
         }
         //lista->free_data(lista);
         //return 1;
