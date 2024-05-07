@@ -52,13 +52,15 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
     lista = novaLista;
     lista->free_data = free_data;
 }
-int Lista_delete(Lista* lista) {
+
+//int Lista_delete(Lista* lista) {
+void Lista_delete(Lista* lista) {
      if (lista->nodoAtual != NULL) {
         lista->free_data(lista->nodoAtual);
     }
     if (lista->head == NULL) {
         lista->free_data(lista);
-        return 1;
+        //return 1;
     }
     else
     {
@@ -73,7 +75,7 @@ int Lista_delete(Lista* lista) {
                 free_data(nodo->prev);
             }
         }
-        return 0;
+        //return 0;
     }
 }
 int Lista_isEmpty(Lista* lista) {
@@ -254,7 +256,7 @@ void Lista_insertAfter(Lista* lista, void* dado) {
     //nodoatual->next = dado
     //nodoatual->next ->prev = nodoatual->next;
     //dado->next = nodoatual->next;
-    Lista_Nodo* novo_nodo  = malloc(sizeof(Lista_Nodo));
+    Lista_Nodo* novo_nodo  = (Lista_Nodo*) malloc(sizeof(Lista_Nodo));
     novo_nodo->valor = malloc(lista->data_size);
     memcpy(novo_nodo->valor, dado, lista->data_size);
     novo_nodo->next=NULL;
