@@ -43,8 +43,7 @@ double double_cmp(void* lhs, void* rhs)
 }
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
-    Lista* novaLista;
-    novaLista = malloc(sizeof(Lista*));
+    Lista* novaLista = (Lista*) malloc(sizeof(Lista));
     novaLista->head = NULL;
     novaLista->tail = NULL;
     novaLista->nodoAtual = NULL;
@@ -88,7 +87,7 @@ int Lista_size(Lista* lista) {
 }
 void Lista_pushFront(Lista* lista, void* valor) {
     Lista_Nodo* nodo;
-    nodo = malloc(sizeof(Lista_Nodo*));
+    nodo = (Lista_Nodo*) malloc(sizeof(Lista_Nodo));
     nodo->valor = malloc(sizeof(lista->data_size));
     memcpy(nodo->valor, valor, lista->data_size);
     nodo->next = NULL;
@@ -108,7 +107,7 @@ void Lista_pushFront(Lista* lista, void* valor) {
 
 void Lista_pushBack(Lista* lista, void* valor) {
     Lista_Nodo* nodo;
-    nodo = malloc(sizeof(Lista_Nodo*));
+    nodo = (Lista_Nodo*) malloc(sizeof(Lista_Nodo));
     nodo->valor = malloc(sizeof(lista->data_size));
     memcpy(nodo->valor, valor, lista->data_size);
     nodo->next = NULL;
@@ -255,7 +254,7 @@ void Lista_insertAfter(Lista* lista, void* dado) {
     //nodoatual->next = dado
     //nodoatual->next ->prev = nodoatual->next;
     //dado->next = nodoatual->next;
-    Lista_Nodo* novo_nodo  = malloc(sizeof(Lista_Nodo*));
+    Lista_Nodo* novo_nodo  = malloc(sizeof(Lista_Nodo));
     novo_nodo->valor = malloc(lista->data_size);
     memcpy(novo_nodo->valor, dado, lista->data_size);
     novo_nodo->next=NULL;
@@ -341,7 +340,7 @@ int Lista_previous(Lista* lista){
     //nodoatual->next = dado
     //nodoatual->next ->prev = nodoatual->next;
     //dado->next = nodoatual->next;
-    Lista_Nodo* novo_nodo  = malloc(sizeof(Lista_Nodo));
+    Lista_Nodo* novo_nodo  = (Lista_Nodo*) malloc(sizeof(Lista_Nodo));
     novo_nodo->valor = malloc(lista->data_size);
     memcpy(novo_nodo->valor, dado, lista->data_size);
     novo_nodo->next=*lista->nodoAtual;
