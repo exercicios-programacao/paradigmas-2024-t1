@@ -56,10 +56,20 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*)) {
 //int Lista_delete(Lista* lista) {
 void Lista_delete(Lista* lista) {
      if (lista->nodoAtual != NULL) {
-        lista->free_data(lista->nodoAtual);
-    }
+         if(lista->free_data != NULL){
+            lista->free_data(lista->nodoAtual);
+        }else{
+            free(lista->nodoAtual)
+        }
+          //free(lista->nodoAtual)
+     }
     if (lista->head == NULL) {
-        lista->free_data(lista);
+        if(lista->free_data != NULL){
+            lista->free_data(lista);
+        }else{
+            free(lista)
+        }
+        //lista->free_data(lista);
         //return 1;
     }
     else
@@ -70,9 +80,19 @@ void Lista_delete(Lista* lista) {
         for (i = 0; i >= lista->size_list; i++) {
             Lista_Nodo* nodo1;
             nodo1 = nodo->next;
-            free_data(nodo->next);
+            //free_data(nodo->next);
+            if(lista->free_data != NULL){
+                lista->free_data(nodo->next);
+            }else{
+                free(nodo->next);
+            }
             if (nodo->prev != NULL) {
-                free_data(nodo->prev);
+                //free_data(nodo->prev);
+                if(lista->free_data != NULL){
+                    lista->free_data(nodo->prev);
+                }else{
+                    free(nodo->prev);
+                }
             }
         }
         //return 0;
@@ -104,7 +124,12 @@ void Lista_pushFront(Lista* lista, void* valor) {
         lista->head = nodo;
     }
     lista->size_list += 1;
-    lista->free_data(nodo);
+    //lista->free_data(nodo);
+    if(lista->free_data != NULL){
+        lista->free_data(nodo);
+    }else{
+        free(nodo);
+    }
 }
 
 void Lista_pushBack(Lista* lista, void* valor) {
@@ -143,7 +168,12 @@ void Lista_pushBack(Lista* lista, void* valor) {
     }
     lista->tail = nodo;
     lista->size_list++;
-    lista->free_data(nodo);
+    //lista->free_data(nodo);
+    if(lista->free_data != NULL){
+        lista->free_data(nodo);
+    }else{
+        free(nodo);
+    }
 }
 
 /*void Lista_pushBack(Lista* lista, void* valor){
@@ -196,8 +226,17 @@ void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*, void*)) {
                 if (prev->next == NULL)
                     lista->tail = prev;
             }
-            free_data(nodo->valor);  // Libera a mem alocada p o valor do nó e pro próprio nó
-            free(nodo);
+            //free_data(nodo->valor);  // Libera a mem alocada p o valor do nó e pro próprio nó
+            //free(nodo);
+            
+            if(lista->free_data != NULL){
+                 lista->free_data(nodo->valor);  // Libera a mem alocada p o valor do nó e pro próprio nó
+                 lista->free_data(nodo);
+            }else{
+                free(nodo->valor);
+                free(nodo);
+            }
+            
             lista->size_list--; // Reduz o tamanho da lista
             return;
         }
@@ -273,8 +312,16 @@ void Lista_insertAfter(Lista* lista, void* dado) {
             lista->tail = novo_nodo;
     }
     lista->size_list += 1;
-    lista->free_data(novo_nodo);
-    free(dado);
+    //lista->free_data(novo_nodo);
+    //free(dado);
+     if(lista->free_data != NULL){
+         lista->free_data(novo_nodo);  // Libera a mem alocada p o valor do nó e pro próprio nó
+         lista->free_data(dado);
+     }else{
+        free(novo_nodo);
+        free(dado);
+    }
+    
 }
 
 void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCurrent p remover o 'elemento atual' da lista
@@ -292,8 +339,15 @@ void Lista_removeCurrent(Lista* lista) { // Implementação da função removeCu
         else {
             lista->tail = nodo->prev;
         }
-        lista->free_data(nodo->valor); // Libera a memória alocada p o valor do nó e p o próprio nó
+        //lista->free_data(nodo->valor); // Libera a memória alocada p o valor do nó e p o próprio nó
+        //free(nodo);
+        if(lista->free_data != NULL){
+         lista->free_data(nodo->valor);  // Libera a mem alocada p o valor do nó e pro próprio nó
+         lista->free_data(nodo);
+     }else{
+        free(nodo->valor);
         free(nodo);
+    }
         lista->size_list--;
     }
 }
@@ -358,8 +412,15 @@ int Lista_previous(Lista* lista){
             lista->head = novo_nodo;
     }
     lista->size_list += 1;
-    lista->free_data(novo_nodo);
-    free(dado);
+    //lista->free_data(novo_nodo);
+    //free(dado);
+     if(lista->free_data != NULL){
+         lista->free_data(novo_nodo);  // Libera a mem alocada p o valor do nó e pro próprio nó
+         lista->free_data(dado);
+     }else{
+        free(novo_nodo);
+        free(dado);
+    }
 }
 
 /*int main() {
