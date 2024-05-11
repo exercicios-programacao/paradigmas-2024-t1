@@ -8,10 +8,16 @@
 typedef struct _lista_nodo {
     void* valor;
     struct _lista_nodo* next;
+    struct _lista_nodo* previous;
 } ListaNodo;
 
 typedef struct {
+    ListaNodo* primeiro;
+    ListaNodo* ultimo;
+    ListaNodo* atual;
+    int tamanho;
 } Lista;
+
 
 
 /**
