@@ -5,12 +5,17 @@
  * Você deve definir a estrutura da lista utilizando as duas estruturas
  * abaixo. Você pode alterá-las com preferir.
  */
-typedef struct _lista_nodo {
+typedef struct nodo {
     void* valor;
-    struct _lista_nodo* next;
-} ListaNodo;
+    struct nodo* prox;
+} Nodo;
 
 typedef struct {
+     Nodo *primeiro;
+     Nodo *atual;
+     Nodo *ultimo;
+     void* data;
+     int tamanho;
 } Lista;
 
 
@@ -18,7 +23,7 @@ typedef struct {
  * Tarefas obrigatórias
  *
  * Implementar uma lista com encadeamento simples que funciona como
- * um iterador sobre sim mesma.
+ * um iterador sobre si mesma.
  *
  * A implementação deveria seguir a ordem em que as funções estão
  * definidas neste arquivo, pois as mesmas funções são utilizadas
