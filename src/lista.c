@@ -1,5 +1,3 @@
-// Feito por: Eduardo Almeida, Gabriel Durzinsky e Pedro Arthur
-// As tarefas extras não foram concluídas 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,9 +42,12 @@ int Lista_isEmpty(Lista *lista) {
     return lista->size == 0;
 }
 
+#inlcude "lista.h"
+
 int Lista_size(Lista *lista) {
     return lista->size;
 }
+
 void Lista_pushFront(Lista *lista, void *valor) {
     ListaNodo *new_node = (ListaNodo *)malloc(sizeof(ListaNodo));
     if (new_node == NULL) {
