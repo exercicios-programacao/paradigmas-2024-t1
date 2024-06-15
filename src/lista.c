@@ -6,27 +6,27 @@ void Lista_imprime(Lista* lista)
     ListaNodo *ptLista = lista->head;
     int index = 1;
 
-    printf("\nImprimindo lista...");
-
+    //printf("\nImprimindo lista...");
+    /*
     if(ptLista == NULL)
     {
         printf("\n...A lista estah vazia!");
     }
     else
-    {
+    {*/
         while(ptLista != NULL)
         {
             printf("\n%do- %c",index,ptLista->valor);
             index++;
             ptLista = ptLista->next;
         }
-        printf("\n...lista impressa!\n");
-    }
+        //printf("\n...lista impressa!\n");
+    //}
 }
 
 void Lista_new(Lista* lista, int data_size, void (*free_data)(void*))
 {
-    printf("\nCriando Lista...");
+    //printf("\nCriando Lista...");
     lista->head = NULL;
     lista->current = NULL;
     lista->tail = NULL;
@@ -34,30 +34,30 @@ void Lista_new(Lista* lista, int data_size, void (*free_data)(void*))
     lista->size_of = data_size;
     lista->free_data = free_data;
 
-    printf("\nO head eh: %s",lista->head);
-    printf("\nO current eh: %s",lista->current);
-    printf("\nO tail eh: %s",lista->tail);
-    printf("\nO size eh: %s",lista->size);
-    printf("\nO size_of eh: %s",lista->size_of);
+    //printf("\nO head eh: %s",lista->head);
+    //printf("\nO current eh: %s",lista->current);
+    //printf("\nO tail eh: %s",lista->tail);
+    //printf("\nO size eh: %s",lista->size);
+    //printf("\nO size_of eh: %s",lista->size_of);
     //printf("\nO free_data eh: %s",lista->free_data);
     //printf("\n...lista criada!\n");
 }
 
 void Lista_delete(Lista* lista)
 {
-    printf("\nRemovendo a Lista...");
+    //printf("\nRemovendo a Lista...");
 
     ListaNodo *ptAux, *ptLista = lista->head;
     while(ptLista != NULL)
     {
         ptAux = ptLista->next;
-        printf("\n%d estah sendo removido...",ptLista->valor);
+        //printf("\n%d estah sendo removido...",ptLista->valor);
         ptLista = lista->free_data;
         ptLista = ptAux;
     }
     lista = lista->free_data;
 
-    printf("\n...lista removida!\n");
+    //printf("\n...lista removida!\n");
 }
 
 int Lista_isEmpty(Lista* lista)
@@ -79,7 +79,7 @@ int Lista_size(Lista* lista)
 
 void Lista_pushFront(Lista* lista, void* valor)
 {
-    printf("\nInserindo o valor %s na frente da lista...",valor);
+    //printf("\nInserindo o valor %s na frente da lista...",valor);
     ListaNodo *novo;
 
     novo = (ListaNodo*) malloc(lista->size_of);
@@ -92,12 +92,12 @@ void Lista_pushFront(Lista* lista, void* valor)
     }
     lista->head = novo;
     lista->size = lista->size + 1;
-    printf("\n...valor inserido!\n");
+    //printf("\n...valor inserido!\n");
 }
 
 void Lista_pushBack(Lista* lista, void* valor)
 {
-    printf("\nInserindo o valor %s no final da lista...",valor);
+    //printf("\nInserindo o valor %s no final da lista...",valor);
 
     ListaNodo *novo, *ptAux = lista->head;
     novo = (ListaNodo*) malloc(lista->size_of);
@@ -121,7 +121,7 @@ void Lista_pushBack(Lista* lista, void* valor)
         lista->tail = novo;
     }
 
-    printf("\n...valor inserido!\n");
+    //printf("\n...valor inserido!\n");
 }
 
 int Lista_search(
@@ -130,7 +130,7 @@ int Lista_search(
     void* dest,
     int (*cmp)(void*,void*))
 {
-    printf("\nBuscando o valor %d\n",chave);
+    //printf("\nBuscando o valor %d\n",chave);
 
     ListaNodo *ptLista = lista->head;
 
@@ -157,7 +157,7 @@ void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*))
     {
         if(cmp(ptLista->valor,chave) == 1)
         {
-            printf("\nRemovendo elemento %d\n",ptLista->valor);
+            //printf("\nRemovendo elemento %d\n",ptLista->valor);
             ptAux = ptLista->next;
             ptLista->next = ptAux->next;
             ptLista->valor = ptAux->valor;
@@ -167,16 +167,17 @@ void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*))
             }
 
             lista->size = lista->size - 1;
-            printf("\nElemento removido!\n");
+            //printf("\nElemento removido!\n");
             hasRemoved = 1;
             break;
         }
         ptLista = ptLista->next;
     }
+    /*
     if (hasRemoved = 0)
     {
-        printf("\nElemento %d nao foi encontrado, portanto nao pode ser removido.", chave);
-    }
+        //printf("\nElemento %d nao foi encontrado, portanto nao pode ser removido.", chave);
+    }*/
 
 }
 
@@ -184,23 +185,24 @@ void Lista_remove(Lista* lista, void* chave, int (*cmp)(void*,void*))
 void Lista_first(Lista* lista)
 {
     lista->current = lista->head;
-    printf("\nEstou no elemento: %d\n",lista->current->valor);
+    //printf("\nEstou no elemento: %d\n",lista->current->valor);
 }
 
 void Lista_last(Lista* lista)
 {
     lista->current = lista->tail;
-    printf("\nEstou no elemento: %d\n",lista->current->valor);
+    //printf("\nEstou no elemento: %d\n",lista->current->valor);
 }
 
 int Lista_next(Lista* lista)
 {
-    if(lista->current->next == NULL){
-        printf("\nVoce esta no ultimo elemento\n");
+    if(lista->current->next != NULL){
+        lista->current = lista->current->next;
+        //printf("\nVoce esta no ultimo elemento\n");
     }
     else{
-        lista->current = lista->current->next;
-        printf("\nEstou no elemnto: %d\n",lista->current->valor);
+
+        //printf("\nEstou no elemnto: %d\n",lista->current->valor);
     }
 }
 
@@ -211,7 +213,7 @@ void Lista_current(Lista* lista, void* dest)
 
 void Lista_insertAfter(Lista* lista, void* dado)
 {
-    printf("/nInserindo %d apos o elemento %d/n", dado, lista->current->valor);
+    //printf("/nInserindo %d apos o elemento %d/n", dado, lista->current->valor);
     ListaNodo *novo, *ptAux, *ptLista = lista->current;
 
     novo = (ListaNodo*) malloc(lista->size_of);
@@ -219,7 +221,7 @@ void Lista_insertAfter(Lista* lista, void* dado)
     novo->next = ptAux;
 
     lista->current->next = novo;
-    printf("/Elemento %d inserido com sucesso!/n", dado);
+    //printf("/Elemento %d inserido com sucesso!/n", dado);
 }
 
 void Lista_removeCurrent(Lista* lista)
