@@ -1,5 +1,5 @@
 #include "lista.h"
-
+#include "cstring"
 
 void Lista_imprime(Lista* lista)
 {
@@ -52,17 +52,17 @@ void Lista_delete(Lista* lista)
     {
         ptAux = ptLista->next;
         //printf("\n%d estah sendo removido...",ptLista->valor);
-        ptLista = lista->free_data;
+        ptLista = NULL;
         ptLista = ptAux;
     }
-    lista = lista->free_data;
+ 
 
     //printf("\n...lista removida!\n");
 }
 
 int Lista_isEmpty(Lista* lista)
 {
-    if(lista->head == lista->free_data)
+    if(lista->head = NULL)
     {
         return 1;
     }
@@ -198,10 +198,11 @@ int Lista_next(Lista* lista)
 {
     if(lista->current->next != NULL){
         lista->current = lista->current->next;
+	return 1;
         //printf("\nVoce esta no ultimo elemento\n");
     }
     else{
-
+	return 0;
         //printf("\nEstou no elemnto: %d\n",lista->current->valor);
     }
 }
@@ -223,7 +224,7 @@ void Lista_insertAfter(Lista* lista, void* dado)
     lista->current->next = novo;
     //printf("/Elemento %d inserido com sucesso!/n", dado);
 }
-
+/*
 void Lista_removeCurrent(Lista* lista)
 {
 
@@ -237,5 +238,5 @@ int Lista_previous(Lista* lista)
 void Lista_insertBefore(Lista* lista, void* dado)
 {
 
-}
+}*/
 
