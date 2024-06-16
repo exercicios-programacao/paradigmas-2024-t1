@@ -1,5 +1,8 @@
 #ifndef _PARADIGMAS_T1_LISTA_H_
 #define _PARADIGMAS_T1_LISTA_H_
+#include <stdio.h>
+#include <stdlib.h>
+#include "lista.h"
 
 /**
  * Você deve definir a estrutura da lista utilizando as duas estruturas
@@ -11,8 +14,15 @@ typedef struct _lista_nodo {
 } ListaNodo;
 
 typedef struct {
+    ListaNodo *head;
+    ListaNodo *current;
+    ListaNodo *tail;
+    int size;
+    int size_of;
+    void (*free_data)(void*);
 } Lista;
 
+void Lista_imprime(Lista* lista);
 
 /**
  * Tarefas obrigatórias
@@ -34,7 +44,7 @@ typedef struct {
  * liberar memória, uma vez que os dados não são ponteiros:
  *
  *    Lista_new(&intlist, sizeof(int), NULL);
- * 
+ *
  * De forma semelhante, uma lista de `double` também não precisa de uma
  * função para liberar memória, mas precisa utilizar o tamanho correto
  * para os dados:
@@ -78,7 +88,7 @@ void Lista_pushBack(Lista* lista, void* valor);
  *
  * Por exemplo, para procura em uma lista de inteiros, é necessário
  * criar uma função de comparação de inteiros, como
- * 
+ *
  *     int int_cmp(const void *lhs, const void* rhs);
  *
  * que retorna um valor maior que 0 (zero), se 'lhs' representa um
@@ -114,7 +124,7 @@ void Lista_last(Lista* lista);
 
 /**
  * Ajusta o 'elemento atual' da lista para próximo elemento.
- * 
+ *
  * A função retorna 0 (falso) se não existe um próximo elemento,
  * e um valor diferente de zero (true) se existe.
  */
@@ -143,7 +153,7 @@ void Lista_removeCurrent(Lista* lista);
 
 /**
  * Ajusta o 'elemento atual' da lista para elemento anterior.
- * 
+ *
  * A função retorna 0 (falso) se não existe um elemento anterior,
  *  e um valor diferente de zero (true) se existe.
  */

@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1714527592 source:c:\onedrive\onedrive - sispro s a servicos e tecnologia da informacao\documentos\codeblocks projects\paradigmas-2024-t1\src\main.c
+	<stdio.h>
+	"lista.h"
+
+1714524876 c:\onedrive\onedrive - sispro s a servicos e tecnologia da informacao\documentos\codeblocks projects\paradigmas-2024-t1\src\lista.h
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1714527528 source:c:\onedrive\onedrive - sispro s a servicos e tecnologia da informacao\documentos\codeblocks projects\paradigmas-2024-t1\src\lista.c
+	"lista.h"
+
+1718487400 source:c:\lasalle\paradigmas de linguagem de programação\paradigmas-2024-t1\src\main.c
+	<stdio.h>
+	"lista.h"
+
+1718487400 c:\lasalle\paradigmas de linguagem de programação\paradigmas-2024-t1\src\lista.h
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
